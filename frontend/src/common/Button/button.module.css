@@ -1,0 +1,35 @@
+.button {
+  background: none;
+  border: none;
+  min-width: 226px;
+  height: 54px;
+  min-height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: 300% 100%;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  background-image: linear-gradient(270deg, #4088FF 0%, #40C9FF 50%, #4088FF 100%);
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 27px;
+  color: #FFF;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0 38px;
+  box-sizing: border-box;
+}
+.button:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+/*# sourceMappingURL=button.module.css.map */

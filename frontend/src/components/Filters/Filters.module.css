@@ -1,0 +1,48 @@
+.Filters {
+  height: 100%;
+  width: 100%;
+  max-width: 350px;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  z-index: 2;
+  background: #F1F3F6;
+  overflow-y: scroll;
+  filter: drop-shadow(4px 4px 10px rgba(64, 152, 255, 0.4));
+}
+.Filters__title {
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #292929;
+}
+.Filters > button {
+  width: 100%;
+  margin-top: 50px;
+}
+.Filters__form {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.Filters__form > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+.Filters__form > * {
+  width: 100%;
+}
+.Filters__form > * > p:first-child {
+  text-transform: capitalize;
+}
+.Filters__form > * input::placeholder {
+  text-transform: capitalize;
+}
+
+/*# sourceMappingURL=Filters.module.css.map */

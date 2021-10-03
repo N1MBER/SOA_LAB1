@@ -1,0 +1,83 @@
+.Header {
+  background: #F1F3F6;
+  box-shadow: 4px 4px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.1), inset 2px 2px 5px rgba(255, 255, 255, 0.5);
+  background: #FFFFFF;
+  width: 100%;
+  height: 60px;
+  position: sticky;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  box-sizing: border-box;
+}
+.Header__title {
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #292929;
+}
+.Header__title__label {
+  margin-left: 10px;
+  font-family: "Gilroy-Medium", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 21px;
+  color: #292929;
+}
+.Header__menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Header__menu > *:not(:last-child) {
+  margin-right: 10px;
+}
+.Header__menu__item {
+  background: none;
+  border: none;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -o-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  padding: 10px 20px;
+  font-family: "Gilroy-Medium", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 21px;
+  color: #292929;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #F6F7FA;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+  border-radius: 12px;
+}
+.Header__menu__item:hover {
+  filter: drop-shadow(4px 4px 10px rgba(64, 152, 255, 0.4));
+}
+.Header__menu__item_active {
+  background-size: 300% 100%;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  background-image: linear-gradient(270deg, #4088FF 0%, #40C9FF 50%, #4088FF 100%);
+  color: #FFF;
+  font-weight: 700;
+}
+.Header__menu__item_active:hover {
+  background-position: 100% 0;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+/*# sourceMappingURL=Header.module.css.map */

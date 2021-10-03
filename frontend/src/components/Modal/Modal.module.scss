@@ -1,0 +1,53 @@
+@import '../../assets/style/mixins';
+
+.Modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 40, 101, 0.2);
+  top: 0;
+  left: 0;
+  z-index: 12;
+  @include flex-center();
+  &__container{
+    position: relative;
+    &__close{
+      position: absolute;
+      @include clear();
+      right: -50px;
+      top: -50px;
+      width: 30px;
+      height: 30px;
+      border-radius: 20px;
+      cursor: pointer;
+      transform: rotate(45deg);
+      @include flex-center();
+      background: #F6F7FA;
+      box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+      transition: box-shadow 0.3s, transform 0.3s;
+      @include font-setter(normal, 700, 24px, 24px, #292929);
+      &:hover{
+        @include blue-drop-shadow();
+        transform: rotate(145deg);
+      }
+    }
+  }
+}
+
+.View{
+  width: 400px;
+  padding: 50px;
+  box-sizing: border-box;
+  background: #F6F7FA;
+  border-radius: 50px;
+  @include flex-start();
+  flex-direction: column;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+  &__title{
+    @include font-setter(normal, 700, 24px, 24px, #292929);
+  }
+  &__content{
+    max-height: 600px;
+    overflow-y: scroll;
+  }
+}

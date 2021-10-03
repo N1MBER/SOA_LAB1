@@ -1,0 +1,168 @@
+@import '../../assets/style/mixins';
+
+.container{
+  width: 100%;
+  max-width:320px;
+  @include flex-start();
+  position: relative;
+  flex-direction: column;
+  z-index: 4;
+  & *{
+    overflow-y: hidden ;
+  }
+  .label{
+    @include font-setter(normal, 600, 16px, 19px, #292929);
+    position: relative;
+    white-space: nowrap;
+    @include flex-center();
+    z-index: 3;
+    margin-bottom: 5px;
+    & .label__star{
+      @include font-setter(normal,600,20px,5px,#40C9FF);
+      //position: absolute;
+      margin-left: 3px;
+      margin-top: 1px;
+    }
+    & > *:nth-child(2){
+      margin-left: 10px;
+    }
+    & > button{
+      margin-left: 10px;
+    }
+  }
+  & .accordionButton{
+    @include clear();
+    @include flex-space-center();
+    height: 52px;
+    width: 100%;
+    cursor: pointer;
+    background: #F6F7FA;
+    box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+    border-radius: 12px;
+    z-index: 5;
+    padding: 2px;
+    transition: background 0.4s ease;
+    box-sizing: border-box;
+    &.accordionButton_disabled{
+      cursor: auto;
+    }
+    &.accordionButton_top_margin{
+      margin-top: 20px;
+    }
+    &:disabled{
+      opacity: 0.6;
+    }
+    & .accordionButton__content{
+      width: 100%;
+      height: 100%;
+      @include flex-space-center();
+      background: #F6F7FA;
+      padding: 0 20px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      & svg {
+        transition: all 0.4s ease;
+      }
+      & p{
+        max-width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      text-align: left;
+      max-width: 100%;
+      overflow-x: hidden;
+      white-space: nowrap;
+      text-after-overflow: ellipsis;
+      @include font-setter(normal, 500, 18px, 21px, #292929);
+    }
+    &.accordionButton_open{
+      background: #40C9FF;
+      & svg{
+        transform: rotate(180deg);
+      }
+    }
+  }
+  & .list{
+    box-sizing: border-box;
+    background: #F1F3F6;
+    position: absolute;
+    right: 0;
+    box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+    @include flex-start();
+    flex-direction: column;
+    transition: height 0.4s ease-in, padding 0.4s, bottom 0.4s;
+    padding: 11px 16px 26px;
+    width: 100%;
+    max-height: 300px;
+    @include button-shadow();
+    @include border-radius(12px);
+    z-index: 4;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    &:not(.list_small) > *:not(:last-child){
+      margin-bottom: 10px;
+    }
+    &.list_small{
+      max-width: 126px;
+    }
+    &.list_open{
+       bottom: 45px;
+    }
+    &.list_hide{
+      height: 0;
+      bottom: 52px;
+      padding-bottom: 0;
+      padding-top: 0;
+      overflow: hidden;
+    }
+    & .list__button{
+      @include clear();
+      width: 100%;
+      @include flex-space-center();
+      min-height: 35px;
+      box-sizing: border-box;
+      cursor: pointer;
+      & svg:not(:last-child){
+        height: 26px;
+        right: 56px;
+        position: absolute;
+      }
+      &:hover{
+        & .listButton{
+          background: #F6F7FA;
+          box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+        }
+      }
+      & svg:not(:last-child){
+        max-width: 96px;
+      }
+      &.list__button_active{
+        & .listButton{
+          background: #F6F7FA;
+          box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+        }
+      }
+      & .listButton{
+        border-radius: 7px;
+        height: 100%;
+        background: none;
+        padding: 0 7px;
+        transition: background 0.2s ease, border-radius 0.2s ease;
+        @include flex-center();
+        & .listButton__text{
+          @include font-setter(normal, normal, 18px, 21px, #292929);
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 1600px){
+  .list__button{
+    display: none;
+    & svg:not(:last-child){
+      max-width: 60px !important;
+    }
+  }
+}

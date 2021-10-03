@@ -1,0 +1,64 @@
+@import '../../assets/style/mixins';
+
+.StartPage{
+  width: 100vw;
+  height: 100%;
+  @include flex-center();
+  justify-content: flex-start;
+  padding: 0 100px;
+  box-sizing: border-box;
+  &__info{
+    width: 600px;
+    padding-right: 50px;
+    h1{
+      @include font-setter(normal, 700, 45px, 50px, #292929);
+      margin-bottom: 40px;
+    }
+    h3{
+      @include font-setter(normal, 700, 32px, 35px, #292929);
+      margin-bottom: 20px;
+    }
+    h5{
+      @include font-setter(normal, normal, 32px, 35px, #292929);
+    }
+  }
+  &__links{
+    @include flex-space-center();
+    flex-direction: column;
+    align-items: flex-start;
+    &__link{
+      @include flex-center();
+    }
+    &>*:not(:last-child){
+      margin-bottom: 50px;
+    }
+    &__button{
+      @include clear();
+      @include border-radius(20px);
+      padding: 20px;
+      box-sizing: border-box;
+      cursor: pointer;
+      height: 160px;
+      width: 160px;
+      position: relative;
+      transition: all 0.3s;
+      background: #F6F7FA;
+      box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+      border-radius: 30px;
+      @include flex-center();
+      &__label{
+        padding: 10px 20px;
+        margin-left: 40px;
+        background: #292929;
+        border-radius: 12px;
+        @include flex-center();
+        @include font-setter(normal, 700, 24px, 29px, #FFF);
+      }
+      &__image{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}

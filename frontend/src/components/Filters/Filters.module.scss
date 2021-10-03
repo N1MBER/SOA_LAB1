@@ -1,0 +1,50 @@
+@import '../../assets/style/mixins';
+
+.Filters{
+  height: 100%;
+  width: 100%;
+  max-width: 350px;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  @include flex-start();
+  flex-direction: column;
+  z-index: 2;
+  background: #F1F3F6;
+  overflow-y: scroll;
+  @include blue-drop-shadow();
+  &__container {
+    &__panel{
+      @include flex-start();
+      margin-top: 10px;
+      & > * {
+        margin-right: 10px;
+        transform: scale(0.8);
+      }
+    }
+  }
+  &__title{
+    @include font-setter(normal, 700, 24px, 29px, #292929);
+  }
+  & > button {
+    width: 100%;
+    margin-top: 50px;
+  }
+  &__form{
+    width: 100%;
+    @include flex-start();
+    flex-direction: column;
+    & > *:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    & > * {
+      & > p:first-child{
+        text-transform: capitalize;
+      }
+      & input::placeholder{
+        text-transform: capitalize;
+      }
+      width: 100%;
+    }
+
+  }
+}

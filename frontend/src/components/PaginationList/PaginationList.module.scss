@@ -1,0 +1,21 @@
+@import '../../assets/style/mixins';
+
+.PaginationList{
+  height: 100%;
+  width: 100%;
+  @include flex-center();
+  flex-direction: column;
+  box-sizing: border-box;
+  &__list{
+    max-height: 100%;
+    overflow-y: scroll;
+    width: 100%;
+    padding: 50px;
+    box-sizing: border-box;
+    @include flex-start();
+    flex-direction: column;
+    & > *:not(:last-child){
+      margin-bottom: 20px;
+    }
+  }
+}

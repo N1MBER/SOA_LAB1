@@ -1,0 +1,25 @@
+.PaginationList {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.PaginationList__list {
+  max-height: 100%;
+  overflow-y: scroll;
+  width: 100%;
+  padding: 50px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.PaginationList__list > *:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+/*# sourceMappingURL=PaginationList.module.css.map */

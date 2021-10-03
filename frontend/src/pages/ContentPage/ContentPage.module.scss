@@ -1,0 +1,10 @@
+@import '../../assets/style/mixins';
+
+.ContentPage {
+  height: calc(100% - 60px);
+  width: 100%;
+  @include flex-space-center();
+  display: inline-flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}

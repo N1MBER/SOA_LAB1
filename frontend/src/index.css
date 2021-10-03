@@ -1,0 +1,35 @@
+@font-face {font-family: "Gilroy-Thin";  src:  url("./assets/fonts/Gilroy-Thin.eot");  }
+@font-face {font-family: "Gilroy-UltraLight";  src:  url("./assets/fonts/Gilroy-UltraLight.eot");  }
+@font-face {font-family: "Gilroy-Light";  src:  url("./assets/fonts/Gilroy-Light.ttf");  }
+@font-face {font-family: "Gilroy-Regular";  src:  url("assets/fonts/Gilroy-Regular.ttf");  }
+@font-face {font-family: "Gilroy-Medium";  src:  url("assets/fonts/Gilroy-Medium.ttf");  }
+@font-face {font-family: "Gilroy-SemiBold";  src:  url("assets/fonts/Gilroy-SemiBold.ttf");  }
+@font-face {font-family: "Gilroy-Bold";  src:  url("assets/fonts/Gilroy-Bold.ttf");  }
+@font-face {font-family: "Gilroy-ExtraBold";  src:  url("./assets/fonts/Gilroy-ExtraBold.ttf");  }
+@font-face {font-family: "Gilroy-Black";  src:  url("./assets/fonts/Gilroy-Black.eot");  }
+
+body {
+  margin: 0;
+  background: #E5E5E5;
+  font-family: Gilroy, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+input:focus, button:focus{outline: none}
+
+html,body ,#root {
+  height: 100%;
+  position: relative;
+}
+.App > main{
+  min-height: 100%;
+}
+
+.App{
+  min-height: 100%;
+}
+
+img, image, svg{
+  user-select: none;
+  pointer-events: none;
+}

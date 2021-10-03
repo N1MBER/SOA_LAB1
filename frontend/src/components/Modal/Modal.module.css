@@ -1,0 +1,70 @@
+.Modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 40, 101, 0.2);
+  top: 0;
+  left: 0;
+  z-index: 12;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Modal__container {
+  position: relative;
+}
+.Modal__container__close {
+  position: absolute;
+  background: none;
+  border: none;
+  right: -50px;
+  top: -50px;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transform: rotate(45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F6F7FA;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+  transition: box-shadow 0.3s, transform 0.3s;
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  color: #292929;
+}
+.Modal__container__close:hover {
+  filter: drop-shadow(4px 4px 10px rgba(64, 152, 255, 0.4));
+  transform: rotate(145deg);
+}
+
+.View {
+  width: 400px;
+  padding: 50px;
+  box-sizing: border-box;
+  background: #F6F7FA;
+  border-radius: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+}
+.View__title {
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  color: #292929;
+}
+.View__content {
+  max-height: 600px;
+  overflow-y: scroll;
+}
+
+/*# sourceMappingURL=Modal.module.css.map */

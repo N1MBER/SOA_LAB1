@@ -1,0 +1,12 @@
+.ContentPage {
+  height: calc(100% - 60px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+/*# sourceMappingURL=ContentPage.module.css.map */

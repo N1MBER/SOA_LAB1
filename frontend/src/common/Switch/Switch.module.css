@@ -1,0 +1,87 @@
+.container {
+  width: 100%;
+  position: relative;
+  max-width: 320px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.container .container__label {
+  font-family: "Gilroy-SemiBold", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #292929;
+  margin-bottom: 5px;
+  z-index: 3;
+}
+.container .toggle {
+  width: 100%;
+  box-sizing: border-box;
+  height: 52px;
+  padding: 5px;
+  background: #F1F3F6;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container .toggle.toggle_margin_top {
+  margin-top: 23px;
+}
+.container .toggle .toggle__button {
+  background: none;
+  border: none;
+  flex: 1;
+  width: 100%;
+  transition: all 0.4s ease;
+  height: 100%;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Gilroy-SemiBold", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #292929;
+}
+.container .toggle .toggle__button.toggle__button_disabled {
+  cursor: auto;
+}
+.container .toggle .toggle__button svg {
+  margin-right: 10px;
+}
+.container .toggle .toggle__button:not(.toggle__button_active) {
+  opacity: 0.4;
+}
+.container .toggle .toggle__button.toggle__button_active {
+  color: #292929;
+  background: #F6F7FA;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+}
+.container .toggle .toggle__button.toggle__button_blue {
+  border: 2px solid #40C9FF;
+  color: #40C9FF;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.container .toggle .toggle__button.toggle__button_blue path {
+  fill: #40C9FF;
+  background: -webkit-linear-gradient(180deg, #40C9FF, #4088FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/*# sourceMappingURL=Switch.module.css.map */

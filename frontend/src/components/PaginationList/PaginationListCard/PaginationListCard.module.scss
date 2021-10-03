@@ -1,0 +1,37 @@
+@import '../../../assets/style/mixins';
+
+.PaginationListCard{
+  width: 100%;
+  min-height: 90px;
+  @include flex-space-center();
+  padding: 0 50px;
+  box-sizing: border-box;
+  background: #F1F3F6;
+  /* big_soft */
+  border-radius: 18px;
+  &__content{
+    @include flex-center();
+    height: 100%;
+    padding: 10px 0;
+    box-sizing: border-box;
+    &__index{
+      @include font-setter(normal, 700, 24px, 29px, #292929);
+    }
+    &__text{
+      margin-left: 10px;
+      height: 100%;
+      max-width: 300px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      @include flex-center();
+      @include font-setter(normal, normal, 19px, 22px, #292929);
+    }
+  }
+  &__panel{
+    @include flex-center();
+    & > button:not(:last-child){
+      margin-right: 10px;
+    }
+  }
+}

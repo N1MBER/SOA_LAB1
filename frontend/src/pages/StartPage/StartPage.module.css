@@ -1,0 +1,98 @@
+.StartPage {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 100px;
+  box-sizing: border-box;
+}
+.StartPage__info {
+  width: 600px;
+  padding-right: 50px;
+}
+.StartPage__info h1 {
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 45px;
+  line-height: 50px;
+  color: #292929;
+  margin-bottom: 40px;
+}
+.StartPage__info h3 {
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 35px;
+  color: #292929;
+  margin-bottom: 20px;
+}
+.StartPage__info h5 {
+  font-family: "Gilroy-Regular", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 35px;
+  color: #292929;
+}
+.StartPage__links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.StartPage__links__link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.StartPage__links > *:not(:last-child) {
+  margin-bottom: 50px;
+}
+.StartPage__links__button {
+  background: none;
+  border: none;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -o-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 160px;
+  width: 160px;
+  position: relative;
+  transition: all 0.3s;
+  background: #F6F7FA;
+  box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.StartPage__links__button__label {
+  padding: 10px 20px;
+  margin-left: 40px;
+  background: #292929;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Gilroy-Bold", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #FFF;
+}
+.StartPage__links__button__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/*# sourceMappingURL=StartPage.module.css.map */

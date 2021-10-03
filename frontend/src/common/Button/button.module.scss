@@ -1,0 +1,18 @@
+@import "../../assets/style/mixins";
+
+.button{
+  @include clear();
+  min-width: 226px;
+  height: 54px;
+  min-height: 54px;
+  @include flex-center();
+  @include blue-button();
+  @include font-setter(normal,bold,22px, 27px, #FFF);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0 38px;
+  box-sizing: border-box;
+  &:hover{
+    @include blue-button-hover();
+  }
+}
