@@ -1,0 +1,44 @@
+@import '../../assets/style/mixins';
+
+.PaginationSelector{
+  padding: 15px 50px;
+  position: absolute;
+  bottom: 20px;
+  box-sizing: border-box;
+  @include flex-center();
+  background: #FFF;
+  @include blue-drop-shadow();
+  border-radius: 16px;
+  & > *:not(:last-child){
+    margin-right: 15px;
+  }
+  &__button{
+    @include clear();
+    height: 30px;
+    width: 30px;
+    @include flex-center();
+    cursor: pointer;
+    background: #F6F7FA;
+    box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+    border-radius: 8px;
+    @include font-setter(normal, 700, 16px, 19px, #292929);
+    transition: box-shadow 0.3s, color 0.3s;
+    &:hover{
+      color: #40C6FF;
+    }
+    &_active{
+      @include blue-button();
+      color: #FFF;
+      &:hover{
+        @include blue-button-hover();
+      }
+    }
+    &_disabled{
+      opacity: 0.6;
+      cursor: auto;
+      &:hover{
+        color: #292929;
+      }
+    }
+  }
+}

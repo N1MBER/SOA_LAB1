@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {PaginationListCard} from "./PaginationListCard/PaginationListCard";
 import style from './PaginationList.module.scss';
+import {PaginationSelector} from "../PaginationSelector/PaginationSelector";
 
 export const PaginationList = ({items}) => {
+    const [activePage, setActivePage] = useState(1);
+
     return (
         <div className={style.PaginationList}>
            <div className={style.PaginationList__list}>
@@ -16,6 +19,12 @@ export const PaginationList = ({items}) => {
                    )
                })}
            </div>
+            <PaginationSelector
+                minPage={1}
+                maxPage={10}
+                activePage={activePage}
+                onChangePage={(page) => setActivePage(page)}
+            />
         </div>
     )
 }
