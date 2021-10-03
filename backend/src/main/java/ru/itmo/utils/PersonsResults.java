@@ -12,10 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @XmlRootElement(name = "person_result")
 public class PersonsResults {
+    @XmlElement
+    private final long totalPersons;
     @XmlElementWrapper(name = "persons")
     @XmlElement(name = "person")
     private final List<Person> list;
     public PersonsResults(){
+        this.totalPersons = 0;
         this.list = new ArrayList<>();
     }
 }

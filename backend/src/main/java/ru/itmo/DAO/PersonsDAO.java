@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class PersonsDAO {
+    private void applyPagination(TypedQuery<Person> labWorkQuery, PersonParams params){
+        int startIndex = (params.getPageIdx() - 1) * params.getPageSize();
+        labWorkQuery.setFirstResult(startIndex);
+        labWorkQuery.setMaxResults(params.getPageSize());
+    }
+
     public PersonsResults getAllPersons(PersonParams params){
         List<Person> persons = null;
         PersonsResults result = null;
@@ -45,8 +51,15 @@ public class PersonsDAO {
 
             CriteriaQuery<Person> query = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
             TypedQuery<Person> typedQuery = session.createQuery(query);
+            applyPagination(typedQuery, params);
             persons = typedQuery.getResultList();
-            result = new PersonsResults(persons);
+
+            CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+            countQuery.select(criteriaBuilder.count(countQuery.from(Person.class)));
+            countQuery.where(predicates.toArray(new Predicate[]{}));
+            Long count = session.createQuery(countQuery).getSingleResult();
+
+            result = new PersonsResults(count, persons);
         } catch (Exception e){
             if (transaction != null) transaction.rollback();
             throw e;
