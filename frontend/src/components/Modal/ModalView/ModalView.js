@@ -3,10 +3,9 @@ import {useLocation} from "react-router";
 import {useSelector} from "react-redux";
 import style from '../Modal.module.scss';
 
-export const ModalView = () => {
+export const ModalView = ({data}) => {
     const location = useLocation();
 
-    const content = useSelector(store => store.object.modal.content);
 
     return (
         <div className={style.View}>
@@ -16,7 +15,7 @@ export const ModalView = () => {
                 .toUpperCase()}`}
             </h4>
             <pre className={style.View__content}>
-                {JSON.stringify(content, undefined, 4)}
+                {JSON.stringify(data, undefined, 4)}
             </pre>
         </div>
     )

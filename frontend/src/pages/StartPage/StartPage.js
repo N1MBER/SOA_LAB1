@@ -7,6 +7,7 @@ import {coordinate_page, location_page, person_page, start_page} from "../../mod
 import {useHistory} from "react-router";
 
 import style from './StartPage.module.scss';
+import {STUDENT_GROUP, STUDENT_NAME, STUDENT_VAR} from "../../modules/helpers";
 
 export const StartPage = () => {
     const history = useHistory();
@@ -17,24 +18,15 @@ export const StartPage = () => {
             label: 'Person',
             link: `${person_page}/1`
         },
-        {
-            icon: locationIcon,
-            label: 'Location',
-            link: `${location_page}/1`
-        },
-        {
-            icon: coordinateIcon,
-            label: 'Coordinate',
-            link: `${coordinate_page}/1`
-        },
     ]
 
     return (
         <div className={style.StartPage}>
             <div className={style.StartPage__info}>
                 <h1>Лабораторная работа №1</h1>
-                <h3>Колесников М.В.</h3>
-                <h4>Вариант: 1010</h4>
+                <h3>{STUDENT_NAME}</h3>
+                <h4>Группа: {STUDENT_GROUP}</h4>
+                <h4>Вариант: {STUDENT_VAR}</h4>
             </div>
             <div className={style.StartPage__links}>
                 {routes.map(route =>

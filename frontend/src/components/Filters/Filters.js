@@ -1,17 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import style from './Filters.module.scss';
 import Selector from "../../common/Selector/Selector";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IconButton} from "../../common/IconButton/IconButton";
 import createIcon from '../../assets/images/icons/expand.svg';
 import filterIcon from '../../assets/images/icons/filter-1634626-1389150.png';
+import clearIcon from  '../../assets/images/icons/Subtract.svg';
 import {useLocation} from "react-router";
+import {CREATE_MODE, FILTER_MODE, UPDATE_MODE} from "../../modules/helpers";
+import {constructPersonToNormalView} from "../../modules/helpers/constructors";
+import {setFilter} from "../../store/actions/filterAction";
+import classnames from "classnames";
 
-const FILTER_MODE = "FILTER_MODE";
-const UPDATE_MODE = "UPDATE_MODE";
-const CREATE_MODE = "CREATE_MODE";
 
 export const Filters = ({
                      object,
@@ -26,6 +28,11 @@ export const Filters = ({
     const data = useSelector((store) => store.object);
 
     const location = useLocation();
+    const dispatch = useDispatch();
+
+    const filter = useSelector(store => store.filter);
+
+    const [sortField, setSortField] = useState('id');
 
     useEffect(() => {
         let obj = {};
@@ -36,12 +43,18 @@ export const Filters = ({
         setValues(obj);
     }, [objectStructure])
 
-    useEffect(() => {
+    useMemo(() => {
         if (Object.keys(data.changeObject).length > 0) {
             setValues(data.changeObject)
             setMode(UPDATE_MODE);
+        } else {
+            setMode(FILTER_MODE);
         }
     }, [data.changeObject])
+
+    useEffect(() => {
+        setSortField(filter.sortField);
+    }, [])
 
     useEffect(() => {
         setMode(FILTER_MODE);
@@ -81,6 +94,14 @@ export const Filters = ({
         setValues(val);
     }
 
+    const selectSortId = (id) => {
+        setSortField(id);
+        dispatch(setFilter({
+            ...filter,
+            sortField: id
+        }))
+    }
+
     return (
         <div className={style.Filters}>
             <div className={style.Filters__container}>
@@ -96,10 +117,27 @@ export const Filters = ({
                         icon={filterIcon}
                         action={() => changeMode(FILTER_MODE)}
                     />
+                    <IconButton
+                        label={'Очистить'}
+                        icon={clearIcon}
+                        action={() => clearValues()}
+                    />
                 </div>
             </div>
             {objectStructure &&
-                <div className={style.Filters__form}>
+                <div className={classnames(style.Filters__form, {
+                    [style.Filters__form_filter_mode]: mode === FILTER_MODE
+                })}>
+                    {mode === FILTER_MODE &&
+                        <Selector
+                            label={'Sort Field'}
+                            accordionTitle={sortField}
+                            list={Object.keys(objectStructure)}
+                            clickOnElement={(value) => selectSortId(value)}
+                            defaultZIndex={4}
+                            closeOnSelect
+                        />
+                    }
                     {Object.keys(objectStructure).map(key => {
                         if (key !== 'id')
                             switch (objectStructure[key].type){
@@ -131,7 +169,10 @@ export const Filters = ({
             }
             <Button
                 label={'Применить'}
-                onClick={onSubmitAction}
+                onClick={() => onSubmitAction({
+                    type: mode,
+                    data: values
+                })}
             />
         </div>
     )

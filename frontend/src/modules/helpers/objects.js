@@ -5,10 +5,10 @@ export const PersonStructure = {
     name: {
         type: 'text'
     },
-    coordinate_X: {
+    coordinates_x: {
         type: 'number'
     },
-    coordinate_Y: {
+    coordinates_y: {
         type: 'number'
     },
     height: {
@@ -17,21 +17,21 @@ export const PersonStructure = {
     passportID: {
         type: 'text'
     },
-    color: {
+    hairColor: {
         type: 'select',
         list: ['GREEN', 'WHITE', 'BROWN']
     },
-    country: {
+    nationality: {
         type: 'select',
         list: ['VATICAN', 'THAILAND', 'JAPAN']
     },
-    location_X: {
+    location_x: {
         type: 'number'
     },
-    location_Y: {
+    location_y: {
         type: 'number'
     },
-    location_Z: {
+    location_z: {
         type: 'number'
     },
 }

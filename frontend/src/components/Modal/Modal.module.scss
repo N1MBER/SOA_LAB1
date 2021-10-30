@@ -45,9 +45,20 @@
   box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
   &__title{
     @include font-setter(normal, 700, 24px, 24px, #292929);
+
+    &_alert {
+      color: #FF5050;
+    }
+
+    &_success {
+      color: #6ac23e;
+    }
   }
   &__content{
     max-height: 600px;
     overflow-y: scroll;
+  }
+  &__text {
+    @include font-setter(normal, 500, 19px, 21px, #292929);
   }
 }

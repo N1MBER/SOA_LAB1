@@ -4,13 +4,15 @@ import style from "./IconButton.module.scss";
 export const IconButton = ({
     label,
     icon,
-    action
+    action,
+    ...props
                            }) => {
 
     return (
         <button
             className={style.button}
             onClick={() => action()}
+            {...props}
         >
             <div className={style.button__container}>
                 <img

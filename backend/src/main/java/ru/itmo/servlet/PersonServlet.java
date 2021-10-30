@@ -80,7 +80,7 @@ public class PersonServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/ml");
+        resp.setContentType("text/xml");
         service.updatePerson(req, resp);
     }
 

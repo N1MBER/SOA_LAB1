@@ -22,18 +22,21 @@
         <lombok.version>1.18.20</lombok.version>
     </properties>
 
+
     <dependencies>
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>${jakarta.servlet-api.version}</version>
+            <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>${jakarta.persistence-api.version}</version>
         </dependency>
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

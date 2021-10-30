@@ -5,6 +5,7 @@
   min-height: 90px;
   @include flex-space-center();
   padding: 0 50px;
+  margin-bottom: 50px;
   box-sizing: border-box;
   background: #F1F3F6;
   /* big_soft */
@@ -16,6 +17,7 @@
     box-sizing: border-box;
     &__index{
       @include font-setter(normal, 700, 24px, 29px, #292929);
+      width: 50px;
     }
     &__text{
       margin-left: 10px;

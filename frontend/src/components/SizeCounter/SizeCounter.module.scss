@@ -1,0 +1,80 @@
+@import "../../assets/style/mixins";
+
+.SizeCounter {
+  position: absolute;
+  bottom: 80px;
+  right: 60px;
+  width: 60px;
+
+  &_open {
+    & .SizeCounter__Button {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  &:not(.SizeCounter_open) {
+    & .SizeCounter__List {
+      height: 0px;
+      padding: 0px 10px;
+
+    }
+  }
+
+  &__List {
+    background: #F6F7FA;
+    overflow: hidden;
+    height: 150px;
+    width: 100%;
+    @include flex-start();
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    transition: height 0.4s,padding 0.3s;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+  }
+
+  &__ListButton {
+    width: 100%;
+    @include clear();
+    height: 26px;
+    @include flex-center();
+    box-shadow: -6px -6px 20px #FFFFFF, 4px 4px 20px rgba(54, 84, 170, 0.17), inset 2px 2px 5px rgba(255, 255, 255, 0.61);
+    border-radius: 8px;
+    @include font-setter(normal, 700, 16px, 19px, #292929);
+    transition: box-shadow 0.3s, color 0.3s;
+
+    &_active {
+      @include blue-button();
+      color: #FFF;
+      &:hover{
+        @include blue-button-hover();
+      }
+    }
+
+    &:hover {
+      color: #40C6FF;
+    }
+  }
+
+  &__Button {
+    @include clear();
+    height: 60px;
+    width: 60px;
+    @include flex-center();
+    cursor: pointer;
+    background: #F6F7FA;
+    border-radius: 30px;
+    @include font-setter(normal, 700, 19px, 21px, #292929);
+    transition: border-radius 0.3s;
+    &:hover{
+      color: #40C6FF;
+    }
+
+    &:hover {
+
+    }
+  }
+}

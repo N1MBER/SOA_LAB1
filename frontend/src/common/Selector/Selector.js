@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import style from './Selector.module.scss';
 import classnames from 'classnames';
 
@@ -25,6 +25,7 @@ const Selector = ({
     const [isVisibleAdditionalList, setIsVisibleAdditionalList] = useState(false);
 
     const listRef = useRef(null);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         document.addEventListener('ScanMenuHide', () => {
@@ -84,6 +85,10 @@ const Selector = ({
         }
     }, [disabled])
 
+    const handleClick = () => {
+        setListOpened(!listOpened);
+    }
+
     return (
         <div
             className={style.container}
@@ -106,7 +111,8 @@ const Selector = ({
                 disabled={!!disabled ||
                     (!toggleState && typeof toggleState === 'boolean')
                 }
-                onClick={() => setListOpened(!listOpened)}
+                ref={buttonRef}
+                onClick={() => handleClick()}
             >
                 <div className={style.accordionButton__content}>
                     <p>{accordionTitle}</p>

@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
         {modal.visible &&
-            <Modal type={modal.type}/>
+            <Modal type={modal.type} data={modal.data}/>
         }
         <Header/>
         <Router/>

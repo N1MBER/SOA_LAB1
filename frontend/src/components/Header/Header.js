@@ -4,6 +4,7 @@ import {useHistory} from "react-router";
 import {useLocation} from "react-router-dom";
 import classNames from "classnames";
 import {coordinate_page, location_page, person_page, start_page} from "../../modules/api";
+import {STUDENT_NAME} from "../../modules/helpers";
 
 export const Header = () => {
 
@@ -19,14 +20,6 @@ export const Header = () => {
             label: 'Person',
             link: `${person_page}/1`
         },
-        {
-            label: 'Location',
-            link: `${location_page}/1`
-        },
-        {
-            label: 'Coordinate',
-            link: `${coordinate_page}/1`
-        },
     ]
 
     const changePage = (route) => {
@@ -39,7 +32,7 @@ export const Header = () => {
             <h1  className={style.Header__title}>
                 Lab1
                 <span  className={style.Header__title__label}>
-                    Колесников М.В.
+                    {STUDENT_NAME}
                 </span>
             </h1>
             <div className={style.Header__menu}>

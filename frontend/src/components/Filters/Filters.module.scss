@@ -46,5 +46,8 @@
       width: 100%;
     }
 
+    &_filter_mode > div > div {
+      max-height: 150px !important;
+    }
   }
 }
