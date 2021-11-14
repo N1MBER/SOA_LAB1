@@ -46,19 +46,26 @@ export const useRequest = () => {
     }
 
     const getItem = async (value) => {
-        return await sendRequest('GET', API_PERSONS + `/${value}`).then(async response => {
-            if (!response.error) {
-                return await converter.parseStringPromise(response).then(res => {
-                    if (res && res.person) {
-                        return decomposePersonToNormalView(res.person)
-                    } else {
-                        return {error: true}
-                    }
-                })
-            } else {
-                return await getErrorMessage(response.message);
+        try {
+            return await sendRequest('GET', API_PERSONS + `/${value}`).then(async response => {
+                if (!response.error) {
+                    return await converter.parseStringPromise(response).then(res => {
+                        if (res && res.person) {
+                            return decomposePersonToNormalView(res.person)
+                        } else {
+                            return {error: true}
+                        }
+                    })
+                } else {
+                    return await getErrorMessage(response.message);
+                }
+            })
+        } catch (e) {
+            return {
+                error: true,
+                message: "Неопознанная ошибка"
             }
-        })
+        }
     }
 
     const constructParamString = (filter) => {
@@ -82,21 +89,28 @@ export const useRequest = () => {
         if (value)
             filter = Object.assign(filter, value);
         return await sendRequest('GET', API_PERSONS + constructParamString(filter)).then(async response => {
-            if (!response.error) {
-                return await converter.parseStringPromise(response).then(res => {
-                    let arr = [];
-                    if (validResult(res) && Number(res.person_result.totalPersons[0]) !== 0) {
-                        res.person_result.persons[0].person.forEach(item => {
-                            arr.push(decomposePersonToNormalView(item));
-                        })
-                    }
-                    return {
-                        results: arr,
-                        count: Number(res.person_result.totalPersons[0]),
-                    };
-                })
-            } else {
-                return await getErrorMessage(response.message);
+            try {
+                if (!response.error) {
+                    return await converter.parseStringPromise(response).then(res => {
+                        let arr = [];
+                        if (validResult(res) && Number(res.person_result.totalPersons[0]) !== 0) {
+                            res.person_result.persons[0].person.forEach(item => {
+                                arr.push(decomposePersonToNormalView(item));
+                            })
+                        }
+                        return {
+                            results: arr,
+                            count: res.person_result ? Number(res.person_result.totalPersons[0]) : 0,
+                        };
+                    })
+                } else {
+                    return await getErrorMessage(response.message);
+                }
+            } catch(e) {
+                return {
+                    error: true,
+                    message: "Неопознанная ошибка"
+                }
             }
         })
     }

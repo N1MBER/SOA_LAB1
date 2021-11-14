@@ -1,13 +1,13 @@
 const isDev = true
 
-export const backURL = isDev ? 'http://localhost:8080' : '';
+export const backURL = isDev ? 'http://localhost:8080/persons' : '/persons';
 
 export const API_PERSONS = '/persons';
 
-export const start_page = '/start';
-export const person_page = '/person';
-export const location_page = '/location';
-export const coordinate_page = '/coordinate';
+export const start_page = '/persons/start';
+export const person_page = '/persons/person';
+export const location_page = '/persons/location';
+export const coordinate_page = '/persons/coordinate';
 
 function getFetchInit(method, headers, body){
     let init =  {

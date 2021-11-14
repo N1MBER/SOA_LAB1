@@ -1,6 +1,6 @@
-package ru.itmo.converter;
+package com.example.back.converter;
 
-import ru.itmo.utils.PersonParams;
+import com.example.back.utils.PersonParams;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ public class XMLLocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 
     @Override
     public LocalDateTime unmarshal(String s) throws Exception {
-        return LocalDateTime.parse(s);
+        return FieldConverter.localDateTimeConvert(s, PersonParams.DATE_PATTERN);
     }
 
     @Override
@@ -18,3 +18,4 @@ public class XMLLocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
         return localDateTime.format(DateTimeFormatter.ofPattern(PersonParams.DATE_PATTERN));
     }
 }
+

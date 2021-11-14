@@ -4,16 +4,14 @@ import {useLocation} from "react-router-dom";
 import { Filters } from "../../components/Filters/Filters";
 import style from './ContentPage.module.scss';
 import {PaginationList} from "../../components/PaginationList/PaginationList";
-import {API_PERSONS, person_page, sendRequest} from "../../modules/api";
+import {person_page} from "../../modules/api";
 import {PersonStructure} from "../../modules/helpers/objects";
 import {useDispatch, useSelector} from "react-redux";
 import {setModal, setObject} from "../../store/actions/objectAction";
-import {decomposePersonToNormalView} from "../../modules/helpers/decompose";
 import {useRequest} from "../../hooks/useRequest";
 import {CREATE_MODE, UPDATE_MODE, FILTER_MODE, DELETE_MODE} from "../../modules/helpers";
 import {MODAL_MESSAGE} from "../../components/Modal/Modal";
 import {setFilter} from "../../store/actions/filterAction";
-const converter = require('xml2js');
 
 export const ContentPage = () => {
     const [objectStructure, setObjectStructure] = useState({});
@@ -36,7 +34,7 @@ export const ContentPage = () => {
     useEffect(() => {
         setObjectStructure(
             getObjectStructureByPathName(
-                `/${location.pathname.split('/')[1]}`
+                `/persons/${location.pathname.split('/')[2]}`
             )
         );
         getData(1)

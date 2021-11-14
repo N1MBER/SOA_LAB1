@@ -1,22 +1,20 @@
-package ru.itmo.entity;
+package com.example.back.entity;
 
+import com.example.back.utils.PersonParams;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.itmo.converter.XMLLocalDateTimeAdapter;
-import ru.itmo.converter.FieldConverter;
+import com.example.back.converter.XMLLocalDateTimeAdapter;
+import com.example.back.converter.FieldConverter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.time.LocalDateTime;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,51 +26,59 @@ import java.util.stream.Collectors;
 @XmlRootElement
 @Table(name = "person")
 public class Person {
-
+    //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @XmlElement
+    @NotNull
     private int id;
 
-    @NotBlank
+    //Поле не может быть null, Строка не может быть пустой
     @XmlElement
+    @NotBlank
+    @NotNull
     private String name;
 
+    //Поле не может быть null
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "coordinates_id")
     @XmlElement
     private Coordinates coordinates;
 
-    @NotNull
+    //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @XmlElement
     @XmlJavaTypeAdapter(XMLLocalDateTimeAdapter.class)
-    private LocalDateTime creationDate;
+    @NotNull
+    private java.time.LocalDateTime creationDate = java.time.LocalDateTime.now();
 
+    //Поле не может быть null, Значение поля должно быть больше 0
     @NotNull
     @Positive
     @XmlElement
+    @Min(0)
     private Float height;
 
-
+    //Длина строки не должна быть больше 34, Значение этого поля должно быть уникальным, Поле не может быть null
     @NotBlank
     @XmlElement
-    @NotNull
     @Column(unique = true)
     @Size(min = 0, max = 34)
     private String passportID;
 
-    @NotBlank
+    //Поле не может быть null
     @XmlElement
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Color hairColor;
 
-    @NotBlank
+    //Поле не может быть null
     @XmlElement
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Country nationality;
 
-    @NotNull
+    //Поле не может быть null
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     @XmlElement
@@ -92,16 +98,19 @@ public class Person {
                 .map(field -> FieldConverter.addPrefixFieldConvert("coordinates", field.getName()))
                 .forEach(fieldList::add);
         Arrays
-                .stream(Person.class.getDeclaredFields())
-                .filter(field -> !field.getName().equals("location"))
-                .map(field -> FieldConverter.addPrefixFieldConvert("person", field.getName()))
-                .forEach(fieldList::add);
-        Arrays
                 .stream(Location.class.getDeclaredFields())
                 .filter(field -> !field.getName().equals("id"))
                 .map(field -> FieldConverter.addPrefixFieldConvert("location", field.getName()))
                 .forEach(fieldList::add);
         return fieldList;
+    }
+
+    public void setCreationDateByNew(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setCreationDate(String date) {
+        this.creationDate = FieldConverter.localDateTimeConvert(date, PersonParams.DATE_PATTERN);
     }
 
     public void update(Person personUpdate){

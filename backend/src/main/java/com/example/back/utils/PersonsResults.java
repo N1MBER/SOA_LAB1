@@ -1,7 +1,7 @@
-package ru.itmo.utils;
+package com.example.back.utils;
 
 import lombok.AllArgsConstructor;
-import ru.itmo.entity.Person;
+import com.example.back.entity.Person;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;

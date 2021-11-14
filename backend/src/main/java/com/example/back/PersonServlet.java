@@ -1,17 +1,21 @@
-package ru.itmo.servlet;
+package com.example.back;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import ru.itmo.converter.FieldConverter;
-import ru.itmo.service.PersonService;
-import ru.itmo.utils.PersonParams;
 
+import com.example.back.service.PersonService;
+import com.example.back.utils.PersonParams;
+
+import com.example.back.converter.FieldConverter;
+import com.example.back.service.PersonService;
+import com.example.back.utils.PersonParams;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/persons/*")
+@WebServlet(name="persons", value="/persons/*")
 public class PersonServlet extends HttpServlet {
     private static final String NAME_PARAM = "name";
     private static final String CREATION_DATE_PARAM = "creationDate";
@@ -27,7 +31,6 @@ public class PersonServlet extends HttpServlet {
     private static final String LOCATION_X_PARAM = "locationX";
     private static final String LOCATION_Y_PARAM = "locationY";
     private static final String LOCATION_Z_PARAM = "locationZ";
-    private static final String LESS_MAXIMUM_POINT_FLAG = "lessMaximumPoint";
 
     private PersonService service;
 
@@ -46,61 +49,90 @@ public class PersonServlet extends HttpServlet {
                 request.getParameter(NATIONALITY_PARAM),
                 request.getParameter(PAGE_IDX_PARAM),
                 request.getParameter(PAGE_SIZE_PARAM),
-                request.getParameter(SORT_FIELD_PARAM),
-                request.getParameter(LESS_MAXIMUM_POINT_FLAG)
+                request.getParameter(SORT_FIELD_PARAM)
         );
     }
 
     @Override
-    public void init() throws ServletException {
-        super.init();
+    public void init() {
         service = new PersonService();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/xml");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
         String pathInfo = req.getPathInfo();
         if (pathInfo == null){
             PersonParams filterParams = getPersonParams(req);
             service.getAllPersons(filterParams, resp);
         } else {
             String[] parts = pathInfo.split("/");
-            service.getPerson(FieldConverter.longConvert(parts[1]), resp);
+            if (parts.length > 1) {
+                String[] params = pathInfo.split("=");
+                if (params.length > 1) {
+                    PersonParams personParams = getPersonParams(req);
+                    service.getAllPersons(personParams, resp);
+                } else {
+                    service.getPerson(parts[1], resp);
+                }
+            } else {
+                service.getInfo(resp, 400, "Unknown query");
+            }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/xml");
-        resp.addHeader("Access-Control-Allow-Origin", "*");
         service.createPerson(req, resp);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/xml");
-        service.updatePerson(req, resp);
+        resp.setContentType("text/ml");
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null) {
+            String[] parts = pathInfo.split("/");
+            if (parts.length > 1) {
+                service.updatePerson(parts[1], req, resp);
+            } else {
+                service.getInfo(resp, 400, "Unknown query");
+            }
+        } else {
+            service.getInfo(resp, 400, "Unknown query");
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
-    }
-
-    @Override
-    protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doHead(req, resp);
+        resp.setContentType("text/xml");
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null) {
+            String[] parts = pathInfo.split("/");
+            if (parts.length > 1) {
+                service.deletePerson(parts[1], resp);
+            } else {
+                service.getInfo(resp, 400, "Unknown query");
+            }
+        } else {
+            service.getInfo(resp, 400, "Unknown query");
+        }
     }
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doOptions(req, resp);
+        resp.setContentType("text/xml");
+        resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        resp.setStatus(200);
+    }
+
+    @Override
+    protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        super.doHead(req, resp);
     }
 
     @Override
     protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doTrace(req, resp);
+//        super.doTrace(req, resp);
     }
 }

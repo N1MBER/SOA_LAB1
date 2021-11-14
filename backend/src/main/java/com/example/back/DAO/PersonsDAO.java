@@ -1,12 +1,13 @@
-package ru.itmo.DAO;
+package com.example.back.DAO;
 
+import com.example.back.validator.ValidatorResult;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.itmo.converter.FieldConverter;
-import ru.itmo.entity.Coordinates;
-import ru.itmo.entity.Location;
-import ru.itmo.entity.Person;
-import ru.itmo.utils.*;
+import com.example.back.converter.FieldConverter;
+import com.example.back.entity.Coordinates;
+import com.example.back.entity.Location;
+import com.example.back.entity.Person;
+import com.example.back.utils.*;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
@@ -32,12 +33,7 @@ public class PersonsDAO {
             Join<Person, Coordinates> coordinatesJoin = root.join("coordinates");
             Join<Person, Location> locationJoin = root.join("location");
             List<Predicate> predicates;
-
-            if (params.getLessThanHeightFlag()){
-                predicates = params.getLessHeightPredicate(criteriaBuilder, root);
-            } else {
-                predicates = params.getPredicates(criteriaBuilder, root, coordinatesJoin, locationJoin);
-            }
+            predicates = params.getPredicates(criteriaBuilder, root, coordinatesJoin, locationJoin);
 
             if (params.getSortField() != null){
                 if (params.getSortField().startsWith("coordinates")){
@@ -54,10 +50,9 @@ public class PersonsDAO {
             applyPagination(typedQuery, params);
             persons = typedQuery.getResultList();
 
-            CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-            countQuery.select(criteriaBuilder.count(countQuery.from(Person.class)));
-            countQuery.where(predicates.toArray(new Predicate[]{}));
-            Long count = session.createQuery(countQuery).getSingleResult();
+            query = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
+            typedQuery = session.createQuery(query);
+            long count = typedQuery.getResultList().size();
 
             result = new PersonsResults(count, persons);
         } catch (Exception e){
@@ -67,12 +62,12 @@ public class PersonsDAO {
         return result;
     }
 
-    public Optional<Person> getPerson(long id){
+    public Optional<Person> getPerson(Long id){
         Transaction transaction;
         Person person = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
-            person = session.find(Person.class, id);
+            person = session.find(Person.class, id.intValue());
             transaction.commit();
         } catch (Exception e){
             e.printStackTrace();
@@ -84,7 +79,7 @@ public class PersonsDAO {
         Transaction transaction = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
-            Long id = (Long) session.save(person);
+            long id = ((Number) session.save(person)).longValue();
             transaction.commit();
             return id;
         } catch (Exception e){
@@ -103,5 +98,31 @@ public class PersonsDAO {
             if (transaction != null) transaction.rollback();
             throw e;
         }
+    }
+
+    public boolean deletePerson(Long id, ValidatorResult validatorResult){
+        Transaction transaction = null;
+        boolean successful = false;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Person person = session.find(Person.class, id.intValue());
+            if (person != null) {
+                session.delete(person);
+                session.flush();
+                successful = true;
+            } else {
+                validatorResult.addMessage("No Person with such Id: " + id);
+                validatorResult.setCode(404);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            validatorResult.addMessage("Server error, try again");
+            validatorResult.setCode(500);
+        }
+        return successful;
     }
 }

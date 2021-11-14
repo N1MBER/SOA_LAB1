@@ -1,9 +1,9 @@
-package ru.itmo.utils;
+package com.example.back.utils;
 
+import com.example.back.validator.ValidatorResult;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import ru.itmo.converter.FieldConverter;
-import ru.itmo.entity.*;
+import com.example.back.converter.FieldConverter;
+import com.example.back.entity.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 public class PersonParams {
     String name;
     LocalDateTime creationDate;
@@ -30,9 +29,14 @@ public class PersonParams {
     Integer pageIdx;
     Integer pageSize;
     String sortField;
-    Boolean lessThanHeightFlag;
 
     public final static String DATE_PATTERN = "dd.MM.yyyy";
+
+    private ValidatorResult validatorResult;
+
+    public PersonParams(){
+        validatorResult = new ValidatorResult();
+    }
 
     public PersonParams(
             String name,
@@ -48,24 +52,23 @@ public class PersonParams {
             String nationality,
             String pageIdx,
             String pageSize,
-            String sortField,
-            String lessThanHeightFlag
+            String sortField
     ) {
+        validatorResult = new ValidatorResult();
         this.name = name;
         this.creationDate = FieldConverter.localDateTimeConvert(creationDate, DATE_PATTERN);
-        this.coordinatesX = FieldConverter.doubleConvert(coordinatesX);
-        this.coordinatesY = FieldConverter.intConvert(coordinatesY);
+        this.coordinatesX = FieldConverter.doubleConvert(coordinatesX, "Coordinates X", validatorResult);
+        this.coordinatesY = FieldConverter.intConvert(coordinatesY, "Coordinates Y", validatorResult);
         this.passportID = passportID;
-        this.height = FieldConverter.floatConvert(height);
-        this.locationX = (Long)FieldConverter.longConvert(locationX);
-        this.locationY = FieldConverter.longConvert(locationY);
-        this.locationZ = FieldConverter.longConvert(locationZ);
-        this.hairColor = FieldConverter.colorConvert(hairColor);
-        this.nationality = FieldConverter.countryConvert(nationality);
+        this.height = FieldConverter.floatConvert(height, "Person height", validatorResult);
+        this.locationX = FieldConverter.longConvert(locationX, "Location X", validatorResult);
+        this.locationY = FieldConverter.longConvert(locationY, "Location Y", validatorResult);
+        this.locationZ = FieldConverter.longConvert(locationZ, "Location Z", validatorResult);
+        this.hairColor = FieldConverter.colorConvert(hairColor, "Person hairColor", validatorResult);
+        this.nationality = FieldConverter.countryConvert(nationality, "Person nationality", validatorResult);
         this.pageIdx = Math.max(FieldConverter.intConvert(pageIdx, 1), 1);
         this.pageSize = Math.max(FieldConverter.intConvert(pageSize, 10), 1);
-        this.sortField = FieldConverter.sortFieldConvert(sortField, Person.getAllFields());
-        this.lessThanHeightFlag = FieldConverter.booleanConvert(lessThanHeightFlag);
+        this.sortField = FieldConverter.sortFieldFilterConvert(sortField, Person.getAllFields(), validatorResult);
     }
 
     public List<Predicate> getPredicates(
@@ -82,7 +85,7 @@ public class PersonParams {
             predicates.add(criteriaBuilder.equal(root.get("creationDate"), this.creationDate));
         }
         if (this.passportID != null){
-            predicates.add(criteriaBuilder.equal(root.get("passportID"), this.passportID));
+            predicates.add(criteriaBuilder.like(root.get("passportID"), this.passportID));
         }
         if (this.hairColor != null){
             predicates.add(criteriaBuilder.equal(root.get("hairColor"), this.hairColor));
@@ -107,14 +110,6 @@ public class PersonParams {
         }
         if (this.locationZ != null){
             predicates.add(criteriaBuilder.equal(locationJoin.get("z"), this.locationZ));
-        }
-        return predicates;
-    }
-
-    public List<Predicate> getLessHeightPredicate(CriteriaBuilder criteriaBuilder, Root<Person> root){
-        List<Predicate> predicates = new ArrayList<>();
-        if (this.height != null){
-            predicates.add(criteriaBuilder.lessThan(root.get("height"), this.height));
         }
         return predicates;
     }

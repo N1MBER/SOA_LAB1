@@ -1,4 +1,4 @@
-package ru.itmo.entity;
+package com.example.back.entity;
 
 public enum Color {
     GREEN,

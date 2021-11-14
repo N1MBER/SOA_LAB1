@@ -1,4 +1,4 @@
-package ru.itmo.converter;
+package com.example.back.converter;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;
