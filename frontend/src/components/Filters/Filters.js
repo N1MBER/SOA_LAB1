@@ -8,11 +8,14 @@ import {IconButton} from "../../common/IconButton/IconButton";
 import createIcon from '../../assets/images/icons/expand.svg';
 import filterIcon from '../../assets/images/icons/filter-1634626-1389150.png';
 import clearIcon from  '../../assets/images/icons/Subtract.svg';
+import userIcon from '../../assets/images/icons/person-1767893-1502146.png';
 import {useLocation} from "react-router";
 import {CREATE_MODE, FILTER_MODE, UPDATE_MODE} from "../../modules/helpers";
 import {constructPersonToNormalView} from "../../modules/helpers/constructors";
 import {setFilter} from "../../store/actions/filterAction";
 import classnames from "classnames";
+import {setModal} from "../../store/actions/objectAction";
+import {MODAL_PERSON} from "../Modal/Modal";
 
 
 export const Filters = ({
@@ -102,6 +105,13 @@ export const Filters = ({
         }))
     }
 
+    const openSearchModal = () => {
+        dispatch(setModal({
+            type: MODAL_PERSON,
+            visible: true,
+        }));
+    }
+
     return (
         <div className={style.Filters}>
             <div className={style.Filters__container}>
@@ -121,6 +131,11 @@ export const Filters = ({
                         label={'Очистить'}
                         icon={clearIcon}
                         action={() => clearValues()}
+                    />
+                    <IconButton
+                        label={'Пользователь по ID'}
+                        icon={userIcon}
+                        action={() => openSearchModal()}
                     />
                 </div>
             </div>

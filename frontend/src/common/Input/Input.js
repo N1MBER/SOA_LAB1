@@ -8,6 +8,7 @@ const Input = ({
                            label,
                            value,
                            type,
+                           _ref,
                            setValue,
                            disabled,
                            required,
@@ -36,6 +37,7 @@ const Input = ({
                     })}
                     value={value}
                     type={type}
+                    ref={_ref}
                     placeholder={placeholder}
                     onChange={changeValue}
                     disabled={disabled}

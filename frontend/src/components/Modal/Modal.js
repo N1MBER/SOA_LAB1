@@ -4,9 +4,11 @@ import {useDispatch} from "react-redux";
 import style from './Modal.module.scss';
 import {setModal} from "../../store/actions/objectAction";
 import {MessageModal} from "./MessageModal/MessageModal";
+import {PersonSearch} from "./PersonSearch/PersonSearch";
 
 export const MODAL_VIEW = 'MODAL_VIEW';
 export const MODAL_MESSAGE = 'MODAL_MESSAGE';
+export const MODAL_PERSON = 'MODAL_PERSON';
 
 export const Modal = ({type, data}) => {
     const dispatch = useDispatch();
@@ -15,6 +17,8 @@ export const Modal = ({type, data}) => {
         switch (type) {
             default:
                 return;
+            case MODAL_PERSON:
+                return <PersonSearch />
             case MODAL_VIEW:
                 return <ModalView data={data} />
             case MODAL_MESSAGE:

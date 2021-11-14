@@ -25,6 +25,7 @@
     z-index: 4;
     @include flex-center();
     display: none;
+    white-space: nowrap;
     @include font-setter(normal, 700, 16px, 19px, #FFF);
     &:before{
       width: 10px;
