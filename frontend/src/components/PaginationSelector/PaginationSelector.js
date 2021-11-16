@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import style from './PaginationSelector.module.scss';
 import classNames from "classnames";
+import {useSelector} from "react-redux";
 
 export const PaginationSelector = ({
     minPage,
@@ -9,6 +10,12 @@ export const PaginationSelector = ({
     activePage,
     onChangePage
 }) => {
+
+    const { pageSize } = useSelector(store => store.filter);
+
+    useEffect(() => {
+        onChangePage(1);
+    }, [pageSize])
 
     const getListPage = (page, maxPage = 1) => {
         let page_array = [1];

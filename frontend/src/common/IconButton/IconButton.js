@@ -5,6 +5,7 @@ export const IconButton = ({
     label,
     icon,
     action,
+    text,
     ...props
                            }) => {
 
@@ -14,13 +15,16 @@ export const IconButton = ({
             onClick={() => action()}
             {...props}
         >
-            <div className={style.button__container}>
-                <img
-                    className={style.button__container__image}
-                    src={icon}
-                    alt={label}
-                />
-            </div>
+            {icon
+                ? <div className={style.button__container}>
+                        <img
+                            className={style.button__container__image}
+                            src={icon}
+                            alt={label}
+                        />
+                </div>
+                :<p className={style.button__text}>{text}</p>
+            }
             <div className={style.button__label}>
                 {label}
             </div>

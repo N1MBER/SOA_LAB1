@@ -36,6 +36,7 @@
 
 .View{
   min-width: 400px;
+  max-height:  80vh;
   padding: 50px;
   box-sizing: border-box;
   background: #F6F7FA;
@@ -59,9 +60,14 @@
     @include flex-space-center();
     align-items: flex-start;
     margin-bottom: 20px;
-
     & > *:last-child {
       margin-top: 38px;
+    }
+    &_easy {
+      gap: 10px;
+      & > *:last-child {
+        margin-top: 19px;
+      }
     }
   }
   &__content{

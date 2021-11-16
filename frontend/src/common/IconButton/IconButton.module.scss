@@ -47,4 +47,7 @@
       object-fit: contain;
     }
   }
+  &__text{
+    @include font-setter(normal, 700, 16px, 19px, #292929);
+  }
 }

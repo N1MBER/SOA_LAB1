@@ -4,6 +4,7 @@ import com.example.back.validator.ValidatorResult;
 import lombok.Getter;
 import com.example.back.converter.FieldConverter;
 import com.example.back.entity.*;
+import lombok.Setter;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
@@ -29,6 +30,9 @@ public class PersonParams {
     Integer pageIdx;
     Integer pageSize;
     String sortField;
+
+    @Setter
+    boolean lessLocationFlag = true;
 
     public final static String DATE_PATTERN = "dd.MM.yyyy";
 
@@ -102,14 +106,26 @@ public class PersonParams {
         if (this.height != null){
             predicates.add(criteriaBuilder.equal(root.get("height"), this.height));
         }
-        if (this.locationX != null){
-            predicates.add(criteriaBuilder.equal(locationJoin.get("x"), this.locationX));
-        }
-        if (this.locationY != null){
-            predicates.add(criteriaBuilder.equal(locationJoin.get("y"), this.locationY));
-        }
-        if (this.locationZ != null){
-            predicates.add(criteriaBuilder.equal(locationJoin.get("z"), this.locationZ));
+        if (this.lessLocationFlag) {
+            if (this.locationX != null){
+                predicates.add(criteriaBuilder.lessThan(locationJoin.get("x"), this.locationX));
+            }
+            if (this.locationY != null){
+                predicates.add(criteriaBuilder.lessThan(locationJoin.get("y"), this.locationY));
+            }
+            if (this.locationZ != null){
+                predicates.add(criteriaBuilder.lessThan(locationJoin.get("z"), this.locationZ));
+            }
+        } else {
+            if (this.locationX != null){
+                predicates.add(criteriaBuilder.equal(locationJoin.get("x"), this.locationX));
+            }
+            if (this.locationY != null){
+                predicates.add(criteriaBuilder.equal(locationJoin.get("y"), this.locationY));
+            }
+            if (this.locationZ != null){
+                predicates.add(criteriaBuilder.equal(locationJoin.get("z"), this.locationZ));
+            }
         }
         return predicates;
     }

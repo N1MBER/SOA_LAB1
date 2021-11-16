@@ -32,6 +32,10 @@ public class PersonServlet extends HttpServlet {
     private static final String LOCATION_Y_PARAM = "locationY";
     private static final String LOCATION_Z_PARAM = "locationZ";
 
+    private static final String MIN_NATIONALITY = "minNationality";
+    private static final String MORE_HEIGHT = "moreHeight";
+    private static final String LESS_LOCATION = "lessLocation";
+
     private PersonService service;
 
     private PersonParams getPersonParams(HttpServletRequest request){
@@ -68,12 +72,28 @@ public class PersonServlet extends HttpServlet {
         } else {
             String[] parts = pathInfo.split("/");
             if (parts.length > 1) {
-                String[] params = pathInfo.split("=");
-                if (params.length > 1) {
-                    PersonParams personParams = getPersonParams(req);
-                    service.getAllPersons(personParams, resp);
-                } else {
-                    service.getPerson(parts[1], resp);
+                switch (parts[1]) {
+                    case LESS_LOCATION:
+                        PersonParams parameters = getPersonParams(req);
+                        parameters.setLessLocationFlag(true);
+                        service.getAllPersons(parameters, resp);
+                        break;
+                    case MIN_NATIONALITY:
+                        service.getMinNationality(resp);
+                        break;
+                    case MORE_HEIGHT:
+                        service.countMoreHeight(parts[2], resp);
+                        break;
+                    default: {
+                        String[] params = pathInfo.split("=");
+                        if (params.length > 1) {
+                            PersonParams personParams = getPersonParams(req);
+                            service.getAllPersons(personParams, resp);
+                        } else {
+                            service.getPerson(parts[1], resp);
+                        }
+                        break;
+                    }
                 }
             } else {
                 service.getInfo(resp, 400, "Unknown query");

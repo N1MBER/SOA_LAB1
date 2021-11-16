@@ -8,6 +8,7 @@ import classNames from "classnames";
 import {useDispatch, useSelector} from "react-redux";
 import {setFilter} from "../../store/actions/filterAction";
 import {SizeCounter} from "../SizeCounter/SizeCounter";
+import {SupMenu} from "../SupMenu/SupMenu";
 
 export const PaginationList = ({
                                    items,
@@ -54,6 +55,7 @@ export const PaginationList = ({
                    )
                })}
            </div>
+            <SupMenu />
             <SizeCounter onChangeSize={(size) => onChangeSize(size)}/>
             <PaginationSelector
                 minPage={1}

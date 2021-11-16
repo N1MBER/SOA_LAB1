@@ -5,8 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.example.back.entity.Location;
 import com.example.back.utils.ServerResponse;
 import com.example.back.validator.Validator;
 import com.example.back.validator.ValidatorResult;
@@ -17,9 +20,6 @@ import com.example.back.converter.XMLConverter;
 import com.example.back.entity.Person;
 import com.example.back.utils.PersonParams;
 import com.example.back.utils.PersonsResults;
-
-import java.io.PrintWriter;
-import java.util.Optional;
 
 public class PersonService {
     private XMLConverter xmlConverter;
@@ -36,6 +36,22 @@ public class PersonService {
             response.setStatus(200);
             PrintWriter writer = response.getWriter();
             writer.write(xmlConverter.toStr(personsResults));
+        } catch (Exception e){
+            this.getInfo(response, 500, "Server error, try again");
+        }
+    }
+
+    public void getMinNationality(HttpServletResponse response){
+        try{
+            System.out.println("wsaas");
+            Person person = dao.getMinNationality();
+            if (person == null){
+                this.getInfo(response, 404, "No person");
+                return;
+            }
+            response.setStatus(200);
+            PrintWriter writer = response.getWriter();
+            writer.write(xmlConverter.toStr(person));
         } catch (Exception e){
             this.getInfo(response, 500, "Server error, try again");
         }
@@ -61,10 +77,6 @@ public class PersonService {
         } catch (Exception e){
             this.getInfo(response, 500, "Server error, try again");
         }
-    }
-
-    public void getError(HttpServletResponse response){
-
     }
 
     public void createPerson(HttpServletRequest request, HttpServletResponse response){
@@ -130,6 +142,27 @@ public class PersonService {
             if (!result) getInfo(response, validatorResult.getCode(), validatorResult.getMessage());
             else response.setStatus(200);
         }  catch (Exception e){
+            this.getInfo(response, 500, "Server error, try again");
+        }
+    }
+
+    public void countMoreHeight(String str_height, HttpServletResponse response) {
+        ValidatorResult validatorResult = new ValidatorResult();
+        Integer height = FieldConverter.intConvert(str_height, "Person height", validatorResult);
+
+        if (!validatorResult.isStatus()){
+            this.getInfo(response, 400, validatorResult.getMessage());
+            return;
+        }
+
+        try{
+            Long count = dao.countMoreHeight(height);
+            if (count != null){
+                this.getInfo(response, 200, "Count of persons with greater height than: " + str_height + " is: " + count);
+            } else {
+                this.getInfo(response, 500, "Not found persons for this height: " + str_height);
+            }
+        } catch (Exception e){
             this.getInfo(response, 500, "Server error, try again");
         }
     }

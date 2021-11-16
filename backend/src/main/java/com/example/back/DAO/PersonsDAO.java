@@ -11,14 +11,15 @@ import com.example.back.utils.*;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PersonsDAO {
-    private void applyPagination(TypedQuery<Person> labWorkQuery, PersonParams params){
+    private void applyPagination(TypedQuery<Person> personFilterQuery, PersonParams params){
         int startIndex = (params.getPageIdx() - 1) * params.getPageSize();
-        labWorkQuery.setFirstResult(startIndex);
-        labWorkQuery.setMaxResults(params.getPageSize());
+        personFilterQuery.setFirstResult(startIndex);
+        personFilterQuery.setMaxResults(params.getPageSize());
     }
 
     public PersonsResults getAllPersons(PersonParams params){
@@ -62,6 +63,34 @@ public class PersonsDAO {
         return result;
     }
 
+    public Person getMinNationality(){
+        List<Person> persons;
+        Person result = null;
+        Transaction transaction = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Person> criteriaQuery = criteriaBuilder.createQuery(Person.class);
+            Root<Person> root = criteriaQuery.from(Person.class);
+            criteriaQuery.orderBy(criteriaBuilder.asc(root.get("nationality")));
+
+            CriteriaQuery<Person> query = criteriaQuery.select(root);
+            TypedQuery<Person> typedQuery = session.createQuery(query);
+            typedQuery.setFirstResult(0);
+            typedQuery.setMaxResults(1);
+
+            persons = typedQuery.getResultList();
+
+            if (persons.size() > 0){
+                result = persons.get(0);
+            }
+        } catch (Exception e){
+            if (transaction != null) transaction.rollback();
+            throw e;
+        }
+        return result;
+    }
+
     public Optional<Person> getPerson(Long id){
         Transaction transaction;
         Person person = null;
@@ -98,6 +127,26 @@ public class PersonsDAO {
             if (transaction != null) transaction.rollback();
             throw e;
         }
+    }
+
+    public Long countMoreHeight(Integer height) {
+        Transaction transaction = null;
+        long count;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Person> criteriaQuery = criteriaBuilder.createQuery(Person.class);
+            Root<Person> root = criteriaQuery.from(Person.class);
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.greaterThan(root.get("height"), height));
+            CriteriaQuery<Person> query = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
+            TypedQuery<Person> typedQuery = session.createQuery(query);
+            count = typedQuery.getResultList().size();
+        } catch (Exception e){
+            if (transaction != null) transaction.rollback();
+            throw e;
+        }
+        return count;
     }
 
     public boolean deletePerson(Long id, ValidatorResult validatorResult){

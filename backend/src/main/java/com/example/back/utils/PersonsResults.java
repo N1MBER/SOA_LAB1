@@ -21,4 +21,8 @@ public class PersonsResults {
         this.totalPersons = 0;
         this.list = new ArrayList<>();
     }
+
+    public List<Person> getList() {
+        return list;
+    }
 }

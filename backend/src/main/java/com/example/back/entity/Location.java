@@ -37,4 +37,14 @@ public class Location {
         this.y = locationUpdate.getY();
         this.z = locationUpdate.getZ();
     }
+
+    public Location(
+            Long x,
+            long y,
+            long z
+    ) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }

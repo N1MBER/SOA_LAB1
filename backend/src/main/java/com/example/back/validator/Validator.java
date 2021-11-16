@@ -29,8 +29,8 @@ public class Validator {
     }
 
     public static void validateId(Person stringPerson, ValidatorResult validatorResult){
-        Long labWorkId = FieldConverter.longConvert(stringPerson.getId(), "Person Id", validatorResult);
-        if(labWorkId != null && labWorkId <= 0){
+        Long personId = FieldConverter.longConvert(stringPerson.getId(), "Person Id", validatorResult);
+        if(personId != null && personId <= 0){
             validatorResult.addMessage("Person id must be more than 0");
         }
     }

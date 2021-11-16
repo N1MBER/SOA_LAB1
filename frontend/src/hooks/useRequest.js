@@ -52,6 +52,8 @@ export const useRequest = () => {
                     return await converter.parseStringPromise(response).then(res => {
                         if (res && res.person) {
                             return decomposePersonToNormalView(res.person)
+                        } else if (res && res.serverResponse) {
+                            return {message: res.serverResponse.message[0],}
                         } else {
                             return {error: true}
                         }
@@ -67,6 +69,8 @@ export const useRequest = () => {
             }
         }
     }
+
+
 
     const constructParamString = (filter) => {
         let str = '?pageIdx=1&pageSize=10&sortField=id';
@@ -84,11 +88,11 @@ export const useRequest = () => {
         return str;
     }
 
-    const getFilteredItems = async (value) => {
-        let filter = filterData;
-        if (value)
+    const getFilteredItems = async (value, withoutFilter = false, path) => {
+        let filter = withoutFilter ? value : filterData;
+        if (value && !withoutFilter)
             filter = Object.assign(filter, value);
-        return await sendRequest('GET', API_PERSONS + constructParamString(filter)).then(async response => {
+        return await sendRequest('GET', API_PERSONS + `${path ? path: ''}` + constructParamString(filter)).then(async response => {
             try {
                 if (!response.error) {
                     return await converter.parseStringPromise(response).then(res => {
