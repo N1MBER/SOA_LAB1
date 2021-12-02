@@ -78,13 +78,40 @@ public class FieldConverter {
         return getFloat(number, fieldName, validatorResult);
     }
 
+
     public static Float floatConvert(String number, String fieldName, ValidatorResult validatorResult){
         if (number == null || number.isEmpty()){
             validatorResult.addMessage(fieldName + " is not specified");
             return null;
         }
+        try {
+            Float.parseFloat(number);
+            return getFloat(number, fieldName, validatorResult);
+        }
+        catch (NumberFormatException ex) {
+            validatorResult.addMessage(fieldName + " is not a float");
+            return null;
+        }
+    }
 
-        return getFloat(number, fieldName, validatorResult);
+    public static Float floatConvertPositive(String number, String fieldName, ValidatorResult validatorResult){
+        if (number == null || number.isEmpty()){
+            validatorResult.addMessage(fieldName + " is not specified");
+            return null;
+        }
+        try {
+            Float.parseFloat(number);
+            Float res = getFloat(number, fieldName, validatorResult);
+            if (res <= 0) {
+                validatorResult.addMessage(fieldName + " must be greater then 0");
+                return null;
+            }
+            return res;
+        }
+        catch (NumberFormatException ex) {
+            validatorResult.addMessage(fieldName + " is not a float");
+            return null;
+        }
     }
 
     private static Long getLong(String number, String fieldName, ValidatorResult validatorResult) {
@@ -109,8 +136,14 @@ public class FieldConverter {
             validatorResult.addMessage(fieldName + " is not specified");
             return null;
         }
-
-        return getLong(number, fieldName, validatorResult);
+        try {
+            Long.parseLong(number);
+            return getLong(number, fieldName, validatorResult);
+        }
+        catch (NumberFormatException ex) {
+            validatorResult.addMessage(fieldName + " is not a long");
+            return null;
+        }
     }
 
     private static Color getColor(String color, String fieldName, ValidatorResult validatorResult) {
@@ -187,8 +220,14 @@ public class FieldConverter {
             validatorResult.addMessage(fieldName + " is not specified");
             return null;
         }
-
-        return getInteger(number, fieldName, validatorResult);
+        try {
+            Integer.parseInt(number);
+            return getInteger(number, fieldName, validatorResult);
+        }
+        catch (NumberFormatException ex) {
+            validatorResult.addMessage(fieldName + " is not a integer");
+            return null;
+        }
     }
 
     public static Integer intConvert(String number, int defaultInteger){

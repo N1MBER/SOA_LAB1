@@ -43,7 +43,6 @@ public class PersonService {
 
     public void getMinNationality(HttpServletResponse response){
         try{
-            System.out.println("wsaas");
             Person person = dao.getMinNationality();
             if (person == null){
                 this.getInfo(response, 404, "No person");
@@ -75,6 +74,7 @@ public class PersonService {
                 this.getInfo(response, 404, "No person with such id: " + id);
             }
         } catch (Exception e){
+            System.out.println(e.getMessage());
             this.getInfo(response, 500, "Server error, try again");
         }
     }
@@ -96,6 +96,7 @@ public class PersonService {
             this.getInfo(response, 400, "Unknown data structure");
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             this.getInfo(response, 500, "Server error, try again");
         }
     }
@@ -105,9 +106,7 @@ public class PersonService {
             String xmlStr = FieldConverter.bodyToStringConvert(request);
             com.example.back.stringEntity.Person stringPerson = xmlConverter.fromStr(xmlStr, com.example.back.stringEntity.Person.class);
             ValidatorResult validatorResult = Validator.validatePerson(stringPerson);
-            Long id = FieldConverter.longConvert(str_id, "Delete id", validatorResult);
-            Validator.validateCreationDate(stringPerson, validatorResult);
-            Validator.validateId(stringPerson, validatorResult);
+            Long id = FieldConverter.longConvert(str_id, "Person id", validatorResult);
             if (!validatorResult.isStatus()){
                 getInfo(response, 400, validatorResult.getMessage());
                 return;
@@ -124,6 +123,7 @@ public class PersonService {
             this.getInfo(response, 400, "Can't understand data structure");
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             this.getInfo(response, 500, "Server error, try again");
         }
     }
@@ -142,6 +142,7 @@ public class PersonService {
             if (!result) getInfo(response, validatorResult.getCode(), validatorResult.getMessage());
             else response.setStatus(200);
         }  catch (Exception e){
+            System.out.println(e.getMessage());
             this.getInfo(response, 500, "Server error, try again");
         }
     }
@@ -177,6 +178,6 @@ public class PersonService {
             e.printStackTrace();
             response.setStatus(500);
         }
-
     }
+
 }

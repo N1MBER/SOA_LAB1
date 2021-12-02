@@ -1,1 +1,1 @@
-ssh -L 50432:localhost:50432 s263830@helios.cs.ifmo.ru -p 2222
+ssh -L 51202:localhost:51202 s263830@helios.cs.ifmo.ru -p 2222

@@ -39,7 +39,7 @@ export const FilterModal = ({type}) => {
             locationX: location.x,
             locationY: location.y,
             locationZ: location.z
-        }, false, '/lessLocation');
+        }, true, '/lessLocation');
         if (!result.error) {
             setObject(result.results)
         }

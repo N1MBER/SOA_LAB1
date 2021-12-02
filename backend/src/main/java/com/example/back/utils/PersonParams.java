@@ -1,5 +1,6 @@
 package com.example.back.utils;
 
+import com.example.back.converter.XMLConverter;
 import com.example.back.validator.ValidatorResult;
 import lombok.Getter;
 import com.example.back.converter.FieldConverter;
@@ -10,12 +11,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class PersonParams {
+
+    private XMLConverter xmlConverter;
+
     String name;
     LocalDateTime creationDate;
     Double coordinatesX;
@@ -30,6 +38,20 @@ public class PersonParams {
     Integer pageIdx;
     Integer pageSize;
     String sortField;
+    String nameString;
+    LocalDateTime creationDateString;
+    Double coordinatesXString;
+    Integer coordinatesYString;
+    String passportIDString;
+    Float heightString;
+    Long locationXString;
+    Long locationYString;
+    Long locationZString;
+    Color hairColorString;
+    Country nationalityString;
+    Integer pageIdxString;
+    Integer pageSizeString;
+    String sortFieldString;
 
     @Setter
     boolean lessLocationFlag = true;
@@ -58,6 +80,7 @@ public class PersonParams {
             String pageSize,
             String sortField
     ) {
+        xmlConverter = new XMLConverter();
         validatorResult = new ValidatorResult();
         this.name = name;
         this.creationDate = FieldConverter.localDateTimeConvert(creationDate, DATE_PATTERN);
@@ -70,8 +93,8 @@ public class PersonParams {
         this.locationZ = FieldConverter.longConvert(locationZ, "Location Z", validatorResult);
         this.hairColor = FieldConverter.colorConvert(hairColor, "Person hairColor", validatorResult);
         this.nationality = FieldConverter.countryConvert(nationality, "Person nationality", validatorResult);
-        this.pageIdx = Math.max(FieldConverter.intConvert(pageIdx, 1), 1);
-        this.pageSize = Math.max(FieldConverter.intConvert(pageSize, 10), 1);
+        this.pageIdx = FieldConverter.intConvert(pageIdx, -1);
+        this.pageSize = FieldConverter.intConvert(pageSize, -1);
         this.sortField = FieldConverter.sortFieldFilterConvert(sortField, Person.getAllFields(), validatorResult);
     }
 
@@ -128,5 +151,64 @@ public class PersonParams {
             }
         }
         return predicates;
+    }
+
+    public boolean validateSortField(String field) {
+        return (
+                Objects.equals(field, "id")
+                        || Objects.equals(field, "name")
+                        || Objects.equals(field, "creationDate")
+                        || Objects.equals(field, "passportID")
+                        || Objects.equals(field, "height")
+                        || Objects.equals(field, "nationality")
+                        || Objects.equals(field, "hairColor")
+                        || Objects.equals(field, "coordinatesX")
+                        || Objects.equals(field, "coordinatesY")
+                        || Objects.equals(field, "locationX")
+                        || Objects.equals(field, "locationY")
+                        || Objects.equals(field, "locationZ")
+        );
+    }
+
+    public boolean validatePageIDX(Integer page) {
+        return page > 0;
+    }
+
+    public boolean validatePageSize(Integer size) {
+        return size > 0;
+    }
+
+    public boolean validateParams(HttpServletResponse response) {
+        try {
+            List<String> errorParams = new ArrayList<>();
+            if (!validatePageIDX(this.pageIdx)) {
+                errorParams.add("pageIdx");
+            }
+            if (!validatePageSize(this.pageSize)) {
+                errorParams.add("pageSize");
+            }
+            if (!validateSortField(this.sortField)) {
+                errorParams.add("sortField");
+            }
+            if (errorParams.size() > 0) {
+                this.getInfo(response, 400,"Unsupported value of params: " + String.join(", ", errorParams));
+            }
+            return errorParams.size() == 0;
+        } catch (Exception e) {
+            this.getInfo(response, 400,"Unsupported param, error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void getInfo(HttpServletResponse response, int code, String message){
+        try {
+            ServerResponse serverResponse = new ServerResponse(message);
+            PrintWriter writer = response.getWriter();
+            writer.write(xmlConverter.toStr(serverResponse));
+            response.setStatus(code);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(500);
+        }
     }
 }

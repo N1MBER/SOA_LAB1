@@ -37,6 +37,8 @@ export const useRequest = () => {
 
     const updateItem = async (value) => {
         const id = value.id;
+        delete value.id;
+        delete value.creationDate;
         value = OBJtoXML({person: constructPersonToNormalView(value)});
         return await sendRequest('PUT', API_PERSONS + `/${id}`, value).then(async response => {
             if (response.error)
@@ -69,8 +71,6 @@ export const useRequest = () => {
             }
         }
     }
-
-
 
     const constructParamString = (filter) => {
         let str = '?pageIdx=1&pageSize=10&sortField=id';

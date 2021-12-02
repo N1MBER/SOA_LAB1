@@ -68,7 +68,9 @@ public class PersonServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
         if (pathInfo == null){
             PersonParams filterParams = getPersonParams(req);
-            service.getAllPersons(filterParams, resp);
+            if (filterParams.validateParams(resp)) {
+                service.getAllPersons(filterParams, resp);
+            }
         } else {
             String[] parts = pathInfo.split("/");
             if (parts.length > 1) {
