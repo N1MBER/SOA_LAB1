@@ -52,6 +52,7 @@ public class PersonService {
             PrintWriter writer = response.getWriter();
             writer.write(xmlConverter.toStr(person));
         } catch (Exception e){
+            System.out.println(e.getMessage());
             this.getInfo(response, 500, "Server error, try again");
         }
     }

@@ -17,9 +17,17 @@ import java.util.Optional;
 
 public class PersonsDAO {
     private void applyPagination(TypedQuery<Person> personFilterQuery, PersonParams params){
-        int startIndex = (params.getPageIdx() - 1) * params.getPageSize();
+        int page = params.getPageIdx();
+        if (params.getPageIdx() == null || page <= 0) {
+            page = 1;
+        }
+        int size = params.getPageSize();
+        if (params.getPageSize() == null || size <= 0) {
+            size = 500;
+        }
+        int startIndex = (page - 1) * size;
         personFilterQuery.setFirstResult(startIndex);
-        personFilterQuery.setMaxResults(params.getPageSize());
+        personFilterQuery.setMaxResults(size);
     }
 
     public PersonsResults getAllPersons(PersonParams params){
@@ -35,7 +43,6 @@ public class PersonsDAO {
             Join<Person, Location> locationJoin = root.join("location");
             List<Predicate> predicates;
             predicates = params.getPredicates(criteriaBuilder, root, coordinatesJoin, locationJoin);
-
             if (params.getSortField() != null){
                 if (params.getSortField().startsWith("coordinates")){
                     criteriaQuery.orderBy(criteriaBuilder.asc(coordinatesJoin.get(FieldConverter.removePrefixFieldConvert(params.getSortField(), "coordinates"))));
@@ -57,6 +64,7 @@ public class PersonsDAO {
 
             result = new PersonsResults(count, persons);
         } catch (Exception e){
+            System.out.println(e.getMessage());
             if (transaction != null) transaction.rollback();
             throw e;
         }
