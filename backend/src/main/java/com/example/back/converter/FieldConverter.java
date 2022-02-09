@@ -13,8 +13,6 @@ import com.example.back.validator.ValidatorResult;
 import com.example.back.entity.Color;
 import com.example.back.entity.Country;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class FieldConverter {
     public static String stringConvert(String data, String fieldName, ValidatorResult validatorResult){
         if (data == null || data.isEmpty()){
@@ -88,7 +86,7 @@ public class FieldConverter {
             Float.parseFloat(number);
             return getFloat(number, fieldName, validatorResult);
         }
-        catch (NumberFormatException ex) {
+        catch (Exception ex) {
             validatorResult.addMessage(fieldName + " is not a float");
             return null;
         }
@@ -108,7 +106,7 @@ public class FieldConverter {
             }
             return res;
         }
-        catch (NumberFormatException ex) {
+        catch (Exception ex) {
             validatorResult.addMessage(fieldName + " is not a float");
             return null;
         }
@@ -140,7 +138,7 @@ public class FieldConverter {
             Long.parseLong(number);
             return getLong(number, fieldName, validatorResult);
         }
-        catch (NumberFormatException ex) {
+        catch (Exception ex) {
             validatorResult.addMessage(fieldName + " is not a long");
             return null;
         }
@@ -224,7 +222,7 @@ public class FieldConverter {
             Integer.parseInt(number);
             return getInteger(number, fieldName, validatorResult);
         }
-        catch (NumberFormatException ex) {
+        catch (Exception ex) {
             validatorResult.addMessage(fieldName + " is not a integer");
             return null;
         }
@@ -285,10 +283,6 @@ public class FieldConverter {
 
     public static String stringLikeConvert(String string){
         return string + "%";
-    }
-
-    public static String bodyToStringConvert(HttpServletRequest request) throws IOException {
-        return IOUtils.toString(request.getReader());
     }
 
     public static String removePrefixFieldConvert(String field, String prefix){

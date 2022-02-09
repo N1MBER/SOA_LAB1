@@ -11,7 +11,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
@@ -176,39 +175,5 @@ public class PersonParams {
 
     public boolean validatePageSize(Integer size) {
         return size > 0;
-    }
-
-    public boolean validateParams(HttpServletResponse response) {
-        try {
-            List<String> errorParams = new ArrayList<>();
-            if (!validatePageIDX(this.pageIdx)) {
-                errorParams.add("pageIdx");
-            }
-            if (!validatePageSize(this.pageSize)) {
-                errorParams.add("pageSize");
-            }
-            if (!validateSortField(this.sortField)) {
-                errorParams.add("sortField");
-            }
-            if (errorParams.size() > 0) {
-                this.getInfo(response, 400,"Unsupported value of params: " + String.join(", ", errorParams));
-            }
-            return errorParams.size() == 0;
-        } catch (Exception e) {
-            this.getInfo(response, 400,"Unsupported param, error: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public void getInfo(HttpServletResponse response, int code, String message){
-        try {
-            ServerResponse serverResponse = new ServerResponse(message);
-            PrintWriter writer = response.getWriter();
-            writer.write(xmlConverter.toStr(serverResponse));
-            response.setStatus(code);
-        } catch (IOException e) {
-            e.printStackTrace();
-            response.setStatus(500);
-        }
     }
 }

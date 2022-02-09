@@ -1,25 +1,19 @@
 package com.example.back.service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import com.example.back.entity.Location;
-import com.example.back.utils.ServerResponse;
-import com.example.back.validator.Validator;
-import com.example.back.validator.ValidatorResult;
-import lombok.SneakyThrows;
 import com.example.back.DAO.PersonsDAO;
 import com.example.back.converter.FieldConverter;
 import com.example.back.converter.XMLConverter;
 import com.example.back.entity.Person;
 import com.example.back.utils.PersonParams;
 import com.example.back.utils.PersonsResults;
+import com.example.back.utils.ServerResponse;
+import com.example.back.validator.Validator;
+import com.example.back.validator.ValidatorResult;
+import lombok.SneakyThrows;
+
+import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBException;
+import java.util.Optional;
 
 public class PersonService {
     private XMLConverter xmlConverter;
@@ -30,87 +24,75 @@ public class PersonService {
         dao = new PersonsDAO();
     }
 
-    public void getAllPersons(PersonParams params, HttpServletResponse response){
+    public Response getAllPersons(PersonParams params){
         try {
             PersonsResults personsResults = dao.getAllPersons(params);
-            response.setStatus(200);
-            PrintWriter writer = response.getWriter();
-            writer.write(xmlConverter.toStr(personsResults));
+            return Response.ok(xmlConverter.toStr(personsResults)).build();
         } catch (Exception e){
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo(500, "Server error, try again");
         }
     }
 
-    public void getMinNationality(HttpServletResponse response){
+    public Response getMinNationality(){
         try{
             Person person = dao.getMinNationality();
             if (person == null){
-                this.getInfo(response, 404, "No person");
-                return;
+                return getInfo(404, "No person");
             }
-            response.setStatus(200);
-            PrintWriter writer = response.getWriter();
-            writer.write(xmlConverter.toStr(person));
+            return Response.ok(xmlConverter.toStr(person)).build();
         } catch (Exception e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo( 500, "Server error, try again");
         }
     }
 
     @SneakyThrows
-    public void getPerson(String str_id, HttpServletResponse response){
+    public Response getPerson(String str_id){
         ValidatorResult validatorResult = new ValidatorResult();
         Long id = FieldConverter.longConvert(str_id, "Person Id", validatorResult);
         if (!validatorResult.isStatus()){
-            this.getInfo(response, 400, validatorResult.getMessage());
-            return;
+            return getInfo( 400, validatorResult.getMessage());
         }
         try {
             Optional<Person> person = dao.getPerson(id);
             if (person.isPresent()){
-                response.setStatus(200);
-                PrintWriter writer = response.getWriter();
-                writer.write(xmlConverter.toStr(person.get()));
+                return Response.ok(xmlConverter.toStr(person.get())).build();
             } else {
-                this.getInfo(response, 404, "No person with such id: " + id);
+                return getInfo( 404, "No person with such id: " + id);
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo(500, "Server error, try again");
         }
     }
 
-    public void createPerson(HttpServletRequest request, HttpServletResponse response){
+    public Response createPerson(String xmlStr){
         try {
-            String xmlStr = FieldConverter.bodyToStringConvert(request);
             com.example.back.stringEntity.Person stringPerson = xmlConverter.fromStr(xmlStr, com.example.back.stringEntity.Person.class);
             ValidatorResult validatorResult = Validator.validatePerson(stringPerson);
             if (!validatorResult.isStatus()){
-                getInfo(response, 400, validatorResult.getMessage());
-                return;
+                return getInfo(400, validatorResult.getMessage());
             }
             Person person = xmlConverter.fromStr(xmlStr, Person.class);
             Long id = dao.createPerson(person);
-            response.setStatus(200);
+            return Response.ok().build();
         } catch (JAXBException e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 400, "Unknown data structure");
+            return getInfo(400, "Unknown data structure");
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo(500, "Server error, try again");
         }
     }
 
-    public void updatePerson(String str_id, HttpServletRequest request, HttpServletResponse response){
+    public Response updatePerson(String str_id, String xmlStr){
         try {
-            String xmlStr = FieldConverter.bodyToStringConvert(request);
             com.example.back.stringEntity.Person stringPerson = xmlConverter.fromStr(xmlStr, com.example.back.stringEntity.Person.class);
             ValidatorResult validatorResult = Validator.validatePerson(stringPerson);
             Long id = FieldConverter.longConvert(str_id, "Person id", validatorResult);
             if (!validatorResult.isStatus()){
-                getInfo(response, 400, validatorResult.getMessage());
-                return;
+                return getInfo(400, validatorResult.getMessage());
             }
             Person personUpdate = xmlConverter.fromStr(xmlStr, Person.class);
             Optional<Person> person = dao.getPerson(id);
@@ -118,67 +100,58 @@ public class PersonService {
                 Person personPresent = person.get();
                 personPresent.update(personUpdate);
                 dao.updatePerson(personPresent);
-                response.setStatus(200);
-            } else getInfo(response, 404, "No Person with such id: " + personUpdate.getId());
+                return Response.ok().build();
+            } else return getInfo(404, "No Person with such id: " + personUpdate.getId());
         } catch (JAXBException e){
-            this.getInfo(response, 400, "Can't understand data structure");
+            return getInfo(400, "Can't understand data structure");
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo( 500, "Server error, try again");
         }
     }
 
-    public void deletePerson(String str_id, HttpServletResponse response){
+    public Response deletePerson(String str_id){
         try {
             ValidatorResult validatorResult = new ValidatorResult();
             Long id = FieldConverter.longConvert(str_id, "Delete id", validatorResult);
 
             if (!validatorResult.isStatus()){
-                this.getInfo(response, 400, validatorResult.getMessage());
-                return;
+                return getInfo(400, validatorResult.getMessage());
             }
 
             boolean result = dao.deletePerson(id, validatorResult);
-            if (!result) getInfo(response, validatorResult.getCode(), validatorResult.getMessage());
-            else response.setStatus(200);
+            if (!result) return getInfo(validatorResult.getCode(), validatorResult.getMessage());
+            else return Response.ok().build();
         }  catch (Exception e){
             System.out.println(e.getMessage());
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo(500, "Server error, try again");
         }
     }
 
-    public void countMoreHeight(String str_height, HttpServletResponse response) {
+    public Response countMoreHeight(String str_height) {
         ValidatorResult validatorResult = new ValidatorResult();
         Integer height = FieldConverter.intConvert(str_height, "Person height", validatorResult);
 
         if (!validatorResult.isStatus()){
-            this.getInfo(response, 400, validatorResult.getMessage());
-            return;
+            return getInfo(400, validatorResult.getMessage());
         }
 
         try{
             Long count = dao.countMoreHeight(height);
             if (count != null){
-                this.getInfo(response, 200, "Count of persons with greater height than: " + str_height + " is: " + count);
+                return getInfo(200, "Count of persons with greater height than: " + str_height + " is: " + count);
             } else {
-                this.getInfo(response, 500, "Not found persons for this height: " + str_height);
+                return getInfo(500, "Not found persons for this height: " + str_height);
             }
         } catch (Exception e){
-            this.getInfo(response, 500, "Server error, try again");
+            return getInfo(500, "Server error, try again");
         }
     }
 
-    public void getInfo(HttpServletResponse response, int code, String message){
-        try {
-            ServerResponse serverResponse = new ServerResponse(message);
-            PrintWriter writer = response.getWriter();
-            writer.write(xmlConverter.toStr(serverResponse));
-            response.setStatus(code);
-        } catch (IOException e) {
-            e.printStackTrace();
-            response.setStatus(500);
-        }
+    public Response getInfo(int code, String message){
+        ServerResponse serverResponse = new ServerResponse(message);
+        return Response.status(code).entity(xmlConverter.toStr(serverResponse)).build();
     }
 
 }
