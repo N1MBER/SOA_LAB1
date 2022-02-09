@@ -7,6 +7,7 @@ import com.example.back.utils.PersonParams;
 import com.example.back.converter.FieldConverter;
 import com.example.back.service.PersonService;
 import com.example.back.utils.PersonParams;
+import com.example.back.validator.ValidatorMessage;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
@@ -67,7 +68,12 @@ public class PersonServlet {
     public Response getPersons(@Context UriInfo uri) {
         MultivaluedMap<String, String> map = uri.getQueryParameters();
         PersonParams filterParams = getPersonParams(map);
-        return service.getAllPersons(filterParams);
+        ValidatorMessage validatorMessage = filterParams.validateParams();
+        if (validatorMessage.getStatus()) {
+            return service.getAllPersons(filterParams);
+        } else {
+            return filterParams.getInfo(400, validatorMessage.getMessage());
+        }
     }
 
     @GET
@@ -94,7 +100,12 @@ public class PersonServlet {
         MultivaluedMap<String, String> map = uri.getQueryParameters();
         PersonParams filterParams = getPersonParams(map);
         filterParams.setLessLocationFlag(true);
-        return service.getAllPersons(filterParams);
+        ValidatorMessage validatorMessage = filterParams.validateParams();
+        if (validatorMessage.getStatus()) {
+            return service.getAllPersons(filterParams);
+        } else {
+            return filterParams.getInfo(400, validatorMessage.getMessage());
+        }
     }
 
     @POST

@@ -1,6 +1,7 @@
 package com.example.back.utils;
 
 import com.example.back.converter.XMLConverter;
+import com.example.back.validator.ValidatorMessage;
 import com.example.back.validator.ValidatorResult;
 import lombok.Getter;
 import com.example.back.converter.FieldConverter;
@@ -11,8 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,5 +177,35 @@ public class PersonParams {
 
     public boolean validatePageSize(Integer size) {
         return size > 0;
+    }
+
+    public ValidatorMessage validateParams() {
+        ValidatorMessage validatorMessage = new ValidatorMessage();
+        try {
+            List<String> errorParams = new ArrayList<>();
+            if (!validatePageIDX(this.pageIdx)) {
+                errorParams.add("pageIdx");
+            }
+            if (!validatePageSize(this.pageSize)) {
+                errorParams.add("pageSize");
+            }
+            if (!validateSortField(this.sortField)) {
+                errorParams.add("sortField");
+            }
+            if (errorParams.size() > 0) {
+                validatorMessage.setMessage("Unsupported value of params: " + String.join(", ", errorParams));
+            } else {
+                validatorMessage.setStatus(true);
+            }
+            return validatorMessage;
+        } catch (Exception e) {
+            validatorMessage.setMessage("Unsupported param, error: " + e.getMessage());
+            return validatorMessage;
+        }
+    }
+
+    public Response getInfo(int code, String message){
+        ServerResponse serverResponse = new ServerResponse(message);
+        return Response.status(code).entity(xmlConverter.toStr(serverResponse)).build();
     }
 }
