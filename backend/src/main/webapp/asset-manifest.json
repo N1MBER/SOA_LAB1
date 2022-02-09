@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/persons/static/css/main.90598cd9.chunk.css",
+    "main.js": "/persons/static/js/main.1f2df78c.chunk.js",
+    "main.js.map": "/persons/static/js/main.1f2df78c.chunk.js.map",
+    "runtime-main.js": "/persons/static/js/runtime-main.26ea9872.js",
+    "runtime-main.js.map": "/persons/static/js/runtime-main.26ea9872.js.map",
+    "static/js/2.e67a0664.chunk.js": "/persons/static/js/2.e67a0664.chunk.js",
+    "static/js/2.e67a0664.chunk.js.map": "/persons/static/js/2.e67a0664.chunk.js.map",
+    "index.html": "/persons/index.html",
+    "static/css/main.90598cd9.chunk.css.map": "/persons/static/css/main.90598cd9.chunk.css.map",
+    "static/js/2.e67a0664.chunk.js.LICENSE.txt": "/persons/static/js/2.e67a0664.chunk.js.LICENSE.txt",
+    "static/media/Edit_icon_(the_Noun_Project_30184).svg.3f69390c.png": "/persons/static/media/Edit_icon_(the_Noun_Project_30184).svg.3f69390c.png",
+    "static/media/index.css": "/persons/static/media/Gilroy-UltraLight.e7028e6c.eot",
+    "static/media/Subtract.897ee63d.svg": "/persons/static/media/Subtract.897ee63d.svg",
+    "static/media/delete-button.8618c2a5.svg": "/persons/static/media/delete-button.8618c2a5.svg",
+    "static/media/expand.0ec8eb98.svg": "/persons/static/media/expand.0ec8eb98.svg",
+    "static/media/logo.6ce24c58.svg": "/persons/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.26ea9872.js",
+    "static/js/2.e67a0664.chunk.js",
+    "static/css/main.90598cd9.chunk.css",
+    "static/js/main.1f2df78c.chunk.js"
+  ]
+}
