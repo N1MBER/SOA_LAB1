@@ -4,9 +4,6 @@ package com.example.back.servlet;
 import com.example.back.service.PersonService;
 import com.example.back.utils.PersonParams;
 
-import com.example.back.converter.FieldConverter;
-import com.example.back.service.PersonService;
-import com.example.back.utils.PersonParams;
 import com.example.back.validator.ValidatorMessage;
 
 import javax.servlet.ServletContext;
@@ -66,6 +63,7 @@ public class PersonServlet {
 
     @GET
     public Response getPersons(@Context UriInfo uri) {
+        System.out.println("SUKA");
         MultivaluedMap<String, String> map = uri.getQueryParameters();
         PersonParams filterParams = getPersonParams(map);
         ValidatorMessage validatorMessage = filterParams.validateParams();
@@ -78,13 +76,13 @@ public class PersonServlet {
 
     @GET
     @Path("/{id}")
-    public Response getPerson(@PathParam("id") String id){
+    public Response getPerson(@Context UriInfo uri, @PathParam("id") String id){
         return service.getPerson(id);
     }
 
     @GET
     @Path(MORE_HEIGHT)
-    public Response getMoreHeight(@PathParam("height") String height) {
+    public Response getMoreHeight(@Context UriInfo uri, @PathParam("height") String height) {
         return service.countMoreHeight(height);
     }
 
