@@ -1,6 +1,7 @@
 package com.example.back.servlet;
 
 
+import com.example.back.entity.EyeColor;
 import com.example.back.service.PersonService;
 
 import javax.servlet.ServletContext;
@@ -19,7 +20,7 @@ public class PersonServlet {
     }
 
     @GET
-    @Path("/eye-color/{eyeColor}")
+    @Path("/eye-color/{eyeColor}/")
     @Produces(MediaType.APPLICATION_XML)
     public Response getEyeColorCount(@PathParam("eyeColor") String eyeColor) {
         return service.eyeCount(eyeColor);
@@ -33,10 +34,11 @@ public class PersonServlet {
         return service.countEyeColorWithNationality(eyeColor, nationality);
     }
 
+
     @OPTIONS
     @Path("{path : .*}")
     public Response options() {
-        return Response.ok()
+        return Response.status(202)
                 .build();
     }
 }
