@@ -72,6 +72,10 @@ public class Person {
     @NotNull
     private Color hairColor;
 
+    @XmlElement
+    @Enumerated(EnumType.STRING)
+    private EyeColor eyeColor;
+
     //Поле не может быть null
     @XmlElement
     @Enumerated(EnumType.STRING)
@@ -122,5 +126,6 @@ public class Person {
         this.hairColor = personUpdate.getHairColor();
         this.nationality = personUpdate.getNationality();
         this.location.update(personUpdate.getLocation());
+        this.eyeColor = personUpdate.getEyeColor();
     }
 }

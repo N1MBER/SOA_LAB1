@@ -35,6 +35,7 @@ public class PersonParams {
     Long locationY;
     Long locationZ;
     Color hairColor;
+    EyeColor eyeColor;
     Country nationality;
     Integer pageIdx;
     Integer pageSize;
@@ -76,6 +77,7 @@ public class PersonParams {
             String locationY,
             String locationZ,
             String hairColor,
+            String eyeColor,
             String nationality,
             String pageIdx,
             String pageSize,
@@ -93,6 +95,7 @@ public class PersonParams {
         this.locationY = FieldConverter.longConvert(locationY, "Location Y", validatorResult);
         this.locationZ = FieldConverter.longConvert(locationZ, "Location Z", validatorResult);
         this.hairColor = FieldConverter.colorConvert(hairColor, "Person hairColor", validatorResult);
+        this.eyeColor = FieldConverter.eyeColorConvert(eyeColor,"Person eyeColor", validatorResult);
         this.nationality = FieldConverter.countryConvert(nationality, "Person nationality", validatorResult);
         this.pageIdx = FieldConverter.intConvert(pageIdx, -1);
         this.pageSize = FieldConverter.intConvert(pageSize, -1);

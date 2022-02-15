@@ -1,5 +1,6 @@
 package com.example.back.converter;
 
+import com.example.back.entity.EyeColor;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -153,6 +154,15 @@ public class FieldConverter {
         }
     }
 
+    private static EyeColor getEyeColor(String color, String fieldName, ValidatorResult validatorResult) {
+        try {
+            return EyeColor.valueOf(color);
+        } catch (Exception e) {
+            validatorResult.addMessage(fieldName + " is not GREEN, BLUE, BROWN");
+            return null;
+        }
+    }
+
     public static Color colorFilterConvert(String color, String fieldName, ValidatorResult validatorResult){
         if (color == null || color.isEmpty()){
             return null;
@@ -168,6 +178,15 @@ public class FieldConverter {
         }
 
         return getColor(color, fieldName, validatorResult);
+    }
+
+    public static EyeColor eyeColorConvert(String color, String fieldName, ValidatorResult validatorResult){
+        if (color == null || color.isEmpty()){
+            validatorResult.addMessage(fieldName + " is not specified");
+            return null;
+        }
+
+        return getEyeColor(color, fieldName, validatorResult);
     }
 
     private static Country getCountry(String country, String fieldName, ValidatorResult validatorResult) {

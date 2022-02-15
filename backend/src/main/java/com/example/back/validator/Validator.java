@@ -16,6 +16,7 @@ public class Validator {
         FieldConverter.stringConvert(stringPerson.getName(), "Person Name", validatorResult);
         FieldConverter.stringConvert(stringPerson.getPassportID(), "Passport id", validatorResult);
         FieldConverter.colorConvert(stringPerson.getHairColor(), "Person hairColor", validatorResult);
+        FieldConverter.eyeColorConvert(stringPerson.getEyeColor(), "Person eyeColor", validatorResult);
         FieldConverter.countryConvert(stringPerson.getNationality(), "Person nationality", validatorResult);
         FieldConverter.floatConvertPositive(stringPerson.getHeight(), "Height", validatorResult);
         if (stringPerson.getCoordinates() != null){

@@ -61,7 +61,7 @@ public class PersonsDAO {
             query = criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
             typedQuery = session.createQuery(query);
             long count = typedQuery.getResultList().size();
-
+            System.out.println(count);
             result = new PersonsResults(count, persons);
         } catch (Exception e){
             System.out.println(e.getMessage());

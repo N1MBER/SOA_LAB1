@@ -35,6 +35,9 @@ public class Person {
     private String hairColor;
 
     @XmlElement
+    private String eyeColor;
+
+    @XmlElement
     private String nationality;
 
     @XmlElement
