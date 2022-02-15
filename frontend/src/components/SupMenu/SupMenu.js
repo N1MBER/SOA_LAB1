@@ -6,7 +6,7 @@ import {useRequest} from "../../hooks/useRequest";
 import {setModal} from "../../store/actions/objectAction";
 import {MODAL_FILTER, MODAL_MESSAGE, MODAL_VIEW} from "../Modal/Modal";
 import {useDispatch} from "react-redux";
-import {LESS_LOCATION, MORE_HEIGHT} from "../Modal/FilterModal/FilterModal";
+import {EYE_COLOR, EYE_COLOR_NATIONALITY, LESS_LOCATION, MORE_HEIGHT} from "../Modal/FilterModal/FilterModal";
 
 export const SupMenu = () => {
     const [open, setOpen] = useState(false);
@@ -16,6 +16,16 @@ export const SupMenu = () => {
     const dispatch = useDispatch();
 
     const arr = [
+        {
+            onClick: () => getEyeColor(),
+            label: "Eye color",
+            text: "E"
+        },
+        {
+            onClick: () => getEyeColorNationality(),
+            label: "Eye color with nationality",
+            text: "EN"
+        },
         {
             onClick: () => getMinNationality(),
             label: "Min nationality",
@@ -56,6 +66,22 @@ export const SupMenu = () => {
             type: MODAL_FILTER,
             visible: true,
             data: MORE_HEIGHT
+        }))
+    };
+
+    const getEyeColor = async () => {
+        dispatch(setModal({
+            type: MODAL_FILTER,
+            visible: true,
+            data: EYE_COLOR
+        }))
+    };
+
+    const getEyeColorNationality = async () => {
+        dispatch(setModal({
+            type: MODAL_FILTER,
+            visible: true,
+            data: EYE_COLOR_NATIONALITY
         }))
     };
 

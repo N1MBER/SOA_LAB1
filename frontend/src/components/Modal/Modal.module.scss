@@ -65,6 +65,7 @@
     }
     &_easy {
       gap: 10px;
+      align-items: flex-end;
       & > *:last-child {
         margin-top: 19px;
       }
@@ -73,6 +74,10 @@
   &__content{
     max-height: 600px;
     overflow-y: scroll;
+
+    &_alert {
+      color: #FF5050;
+    }
   }
   &__text {
     @include font-setter(normal, 500, 19px, 21px, #292929);

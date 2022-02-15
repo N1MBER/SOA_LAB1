@@ -14,6 +14,7 @@ export const decomposePersonToNormalView = (object) => {
     obj.passportID = object['passportID'][0];
     obj.hairColor = object['hairColor'][0];
     obj.nationality = object['nationality'][0];
+    obj.eyeColor = object['eyeColor'] ? object['eyeColor'][0] : undefined;
     obj.location = {
         x: Number(object['location'][0]['x'][0]),
         y: Number(object['location'][0]['y'][0]),

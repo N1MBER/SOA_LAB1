@@ -1,7 +1,7 @@
 
 export const STUDENT_GROUP = 'P34112';
 export const STUDENT_NAME = 'Колесников М.В.';
-export const STUDENT_VAR = '1010';
+export const STUDENT_VAR = '1010.43';
 
 
 export const FILTER_MODE = "FILTER_MODE";

@@ -23,7 +23,7 @@ export const StartPage = () => {
     return (
         <div className={style.StartPage}>
             <div className={style.StartPage__info}>
-                <h1>Лабораторная работа №1</h1>
+                <h1>Лабораторная работа №2</h1>
                 <h3>{STUDENT_NAME}</h3>
                 <h4>Группа: {STUDENT_GROUP}</h4>
                 <h4>Вариант: {STUDENT_VAR}</h4>

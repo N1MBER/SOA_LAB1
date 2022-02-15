@@ -21,6 +21,10 @@ export const PersonStructure = {
         type: 'select',
         list: ['GREEN', 'WHITE', 'BROWN']
     },
+    eyeColor: {
+        type: 'select',
+        list: ['GREEN', 'BLUE', 'BROWN']
+    },
     nationality: {
         type: 'select',
         list: ['VATICAN', 'THAILAND', 'JAPAN']

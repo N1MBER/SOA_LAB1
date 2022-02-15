@@ -32,6 +32,7 @@ export const ContentPage = () => {
     const filter = useSelector(store => store.filter);
 
     useEffect(() => {
+        console.log(123)
         setObjectStructure(
             getObjectStructureByPathName(
                 `/persons/${location.pathname.split('/')[2]}`
@@ -44,6 +45,7 @@ export const ContentPage = () => {
         setIsLoading(true)
         getFilteredItems({pageIdx: page}).then(res => {
             setIsLoading(false)
+            console.log(res)
             if (!res.error){
                 setContent(res.results);
                 setCount(res.count);

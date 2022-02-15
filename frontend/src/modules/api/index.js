@@ -1,13 +1,14 @@
 const isDev = true
 
-export const backURL = isDev ? 'http://localhost:8080/persons' : '/persons';
+export const backURL = isDev ? 'http://localhost:8080' : '/persons';
 
-export const API_PERSONS = '/persons';
+export const API_PERSONS = '/api/persons';
+export const API_EYE_COLOR = '/persons/api/eye-color'
 
-export const start_page = '/persons/start';
-export const person_page = '/persons/person';
-export const location_page = '/persons/location';
-export const coordinate_page = '/persons/coordinate';
+export const start_page = '/api/persons/start';
+export const person_page = '/api/persons/person';
+export const location_page = '/api/persons/location';
+export const coordinate_page = '/api/persons/coordinate';
 
 function getFetchInit(method, headers, body){
     let init =  {
@@ -26,7 +27,7 @@ function getFetchInit(method, headers, body){
 
 export const sendRequest = async (method, end_point,data) => {
     let Headers = {};
-    Headers["Content-Type"] =  "text/xml"
+    Headers["Content-Type"] =  "application/xml"
     return await fetch(backURL + end_point, getFetchInit(method, Headers, data)).then(async (response) => {
         if (
             Math.trunc(response.status / 100) === 4
@@ -39,6 +40,7 @@ export const sendRequest = async (method, end_point,data) => {
         let res = await response.text()
         return res;
     }).catch(err => {
+        console.log(err)
         return {error: true}
     });
 }

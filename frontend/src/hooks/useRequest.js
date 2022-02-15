@@ -1,4 +1,4 @@
-import {API_PERSONS, sendRequest} from "../modules/api";
+import {API_EYE_COLOR, API_PERSONS, sendRequest} from "../modules/api";
 import converter from "xml2js";
 import {decomposePersonToNormalView} from "../modules/helpers/decompose";
 import {constructPersonToNormalView, OBJtoXML} from "../modules/helpers/constructors";
@@ -47,6 +47,37 @@ export const useRequest = () => {
         })
     }
 
+    const getEyeColor = async (color, nationality) => {
+        try {
+            console.log(color, nationality )
+            return await sendRequest('GET', API_EYE_COLOR + `/${color ?? ''}` + (nationality ? `/nationality/${nationality ?? ''}/`: '')).then(async response => {
+                console.log(234)
+                console.log(response)
+                if (!response.error) {
+                    return await converter.parseStringPromise(response).then(res => {
+                        if (res && res.person) {
+                            return decomposePersonToNormalView(res.person)
+                        } else if (res && res.serverResponse) {
+                            return {message: res.serverResponse.message[0],}
+                        } else {
+                            return {error: true}
+                        }
+                    })
+                } else {
+                    console.log(response)
+                    return await getErrorMessage(response.message);
+                }
+            })
+        } catch (e) {
+            console.log(e)
+
+            return {
+                error: true,
+                message: "Неопознанная ошибка"
+            }
+        }
+    }
+
     const getItem = async (value) => {
         try {
             return await sendRequest('GET', API_PERSONS + `/${value}`).then(async response => {
@@ -93,6 +124,7 @@ export const useRequest = () => {
         if (value && !withoutFilter)
             filter = Object.assign(filter, value);
         return await sendRequest('GET', API_PERSONS + `${path ? path: ''}` + constructParamString(filter)).then(async response => {
+            console.log(response)
             try {
                 if (!response.error) {
                     return await converter.parseStringPromise(response).then(res => {
@@ -111,6 +143,7 @@ export const useRequest = () => {
                     return await getErrorMessage(response.message);
                 }
             } catch(e) {
+                console.log(e)
                 return {
                     error: true,
                     message: "Неопознанная ошибка"
@@ -132,6 +165,7 @@ export const useRequest = () => {
         updateItem,
         getItem,
         getFilteredItems,
+        getEyeColor,
         deleteItem,
     };
 }

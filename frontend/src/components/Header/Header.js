@@ -30,7 +30,7 @@ export const Header = () => {
     return (
         <header className={style.Header}>
             <h1  className={style.Header__title}>
-                Lab1
+                Lab2
                 <span  className={style.Header__title__label}>
                     {STUDENT_NAME}
                 </span>

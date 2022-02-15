@@ -14,6 +14,7 @@ export const constructPerson = (value) => {
         height: value['height'] || 0,
         passportID: value['passportID'] || 'default',
         hairColor: value['color'] || 'BROWN',
+        eyeColor: value['eyeColor'] || 'BROWN',
         nationality: value['country'] || 'JAPAN',
         location: value['location']
             ? {
