@@ -1,7 +1,7 @@
 package com.example.back.utils;
 
+import com.example.back.stringEntity.Person;
 import lombok.AllArgsConstructor;
-import com.example.back.entity.Person;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -11,18 +11,23 @@ import java.util.List;
 
 @AllArgsConstructor
 @XmlRootElement(name = "person_result")
-public class PersonsResults {
+public class PersonResultsDTO {
     @XmlElement
-    private final long totalPersons;
+    private long totalPersons;
     @XmlElementWrapper(name = "persons")
     @XmlElement(name = "person")
-    private final List<Person> list;
-    public PersonsResults(){
+    private List<Person> list;
+
+    public PersonResultsDTO(){
         this.totalPersons = 0;
         this.list = new ArrayList<>();
     }
 
     public List<Person> getList() {
         return list;
+    }
+
+    public long getTotalPersons() {
+        return totalPersons;
     }
 }

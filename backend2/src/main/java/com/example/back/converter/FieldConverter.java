@@ -1,9 +1,5 @@
 package com.example.back.converter;
 
-import com.example.back.entity.EyeColor;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,8 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.example.back.validator.ValidatorResult;
-import com.example.back.entity.Color;
-import com.example.back.entity.Country;
 
 public class FieldConverter {
     public static String stringConvert(String data, String fieldName, ValidatorResult validatorResult){
@@ -143,76 +137,6 @@ public class FieldConverter {
             validatorResult.addMessage(fieldName + " is not a long");
             return null;
         }
-    }
-
-    private static Color getColor(String color, String fieldName, ValidatorResult validatorResult) {
-        try {
-            return Color.valueOf(color);
-        } catch (Exception e) {
-            validatorResult.addMessage(fieldName + " is not GREEN, WHITE, BROWN");
-            return null;
-        }
-    }
-
-    private static EyeColor getEyeColor(String color, String fieldName, ValidatorResult validatorResult) {
-        try {
-            return EyeColor.valueOf(color);
-        } catch (Exception e) {
-            validatorResult.addMessage(fieldName + " is not GREEN, BLUE, BROWN");
-            return null;
-        }
-    }
-
-    public static Color colorFilterConvert(String color, String fieldName, ValidatorResult validatorResult){
-        if (color == null || color.isEmpty()){
-            return null;
-        }
-
-        return getColor(color, fieldName, validatorResult);
-    }
-
-    public static Color colorConvert(String color, String fieldName, ValidatorResult validatorResult){
-        if (color == null || color.isEmpty()){
-            validatorResult.addMessage(fieldName + " is not specified");
-            return null;
-        }
-
-        return getColor(color, fieldName, validatorResult);
-    }
-
-    public static EyeColor eyeColorConvert(String color, String fieldName, ValidatorResult validatorResult){
-        if (color == null || color.isEmpty()){
-            validatorResult.addMessage(fieldName + " is not specified");
-            return null;
-        }
-
-        return getEyeColor(color, fieldName, validatorResult);
-    }
-
-    private static Country getCountry(String country, String fieldName, ValidatorResult validatorResult) {
-        try {
-            return Country.valueOf(country);
-        } catch (Exception e) {
-            validatorResult.addMessage(fieldName + " is not VATICAN, THAILAND, JAPAN");
-            return null;
-        }
-    }
-
-    public static Country countryFilterConvert(String country, String fieldName, ValidatorResult validatorResult){
-        if (country == null || country.isEmpty()){
-            return null;
-        }
-
-        return getCountry(country, fieldName, validatorResult);
-    }
-
-    public static Country countryConvert(String country, String fieldName, ValidatorResult validatorResult){
-        if (country == null || country.isEmpty()){
-            validatorResult.addMessage(fieldName + " is not specified");
-            return null;
-        }
-
-        return getCountry(country, fieldName, validatorResult);
     }
 
     private static Integer getInteger(String number, String fieldName, ValidatorResult validatorResult) {

@@ -1,7 +1,6 @@
 package com.example.back.servlet;
 
 
-import com.example.back.entity.EyeColor;
 import com.example.back.service.PersonService;
 
 import javax.servlet.ServletContext;

@@ -1,60 +1,53 @@
 package com.example.back.service;
 
-import com.example.back.DAO.PersonsDAO;
-import com.example.back.converter.FieldConverter;
 import com.example.back.converter.XMLConverter;
-import com.example.back.entity.Country;
-import com.example.back.entity.EyeColor;
+import com.example.back.utils.PersonResultsDTO;
 import com.example.back.utils.ServerResponse;
 import com.example.back.validator.ValidatorResult;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PersonService {
     private XMLConverter xmlConverter;
-    private PersonsDAO dao;
 
     public PersonService(){
         xmlConverter = new XMLConverter();
-        dao = new PersonsDAO();
     }
 
     public Response eyeCount(String str_eye) {
         ValidatorResult validatorResult = new ValidatorResult();
-        EyeColor eyeColor = FieldConverter.eyeColorConvert(str_eye, "Person eyeColor", validatorResult);
-
         if (!validatorResult.isStatus()){
             return getInfo(400, validatorResult.getMessage());
         }
-
         try{
-            Long count = dao.countEyeColor(eyeColor);
-            if (count != null){
-                return getInfo(200, "Count of persons with this eye color " + str_eye + " is: " + count);
-            } else {
-                return getInfo(500, "Not found persons for this eye color: " + str_eye);
-            }
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye);
+            String str = target.request().accept(MediaType.APPLICATION_XML).get(String.class);
+            PersonResultsDTO personResultsDTO = xmlConverter.fromStr(str, PersonResultsDTO.class);
+            return getInfo(200, "Count of persons with this eye color " + str_eye + " is: " + personResultsDTO.getTotalPersons());
         } catch (Exception e){
-            return getInfo(500, "Server error, try again");
+            return getInfo(500, e.getMessage() + " " + e.getLocalizedMessage());
         }
     }
 
     public Response countEyeColorWithNationality(String str_eye, String str_nationality) {
         ValidatorResult validatorResult = new ValidatorResult();
-        EyeColor eyeColor = FieldConverter.eyeColorConvert(str_eye, "Person eyeColor", validatorResult);
-        Country nationality = FieldConverter.countryFilterConvert(str_nationality, "Person nationality", validatorResult);
-
         if (!validatorResult.isStatus()){
             return getInfo(400, validatorResult.getMessage());
         }
 
         try{
-            Long count = dao.countEyeColorWithNationality(eyeColor, nationality);
-            if (count != null){
-                return getInfo(200, "Count of persons with this eye color and nationality is: " + count);
-            } else {
-                return getInfo(500, "Not found persons for this height: " + str_eye);
-            }
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&page=1&sortField=id&eyeColor=" + str_eye);
+            PersonResultsDTO personResultsDTO = target.request().get().readEntity(PersonResultsDTO.class);
+            return getInfo(200, "Count of persons with this eye color and nationality is: " + personResultsDTO.getTotalPersons());
         } catch (Exception e){
             return getInfo(500, "Server error, try again");
         }
