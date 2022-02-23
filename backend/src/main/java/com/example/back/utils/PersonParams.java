@@ -49,8 +49,9 @@ public class PersonParams {
     Long locationXString;
     Long locationYString;
     Long locationZString;
-    Color hairColorString;
-    Country nationalityString;
+    String hairColorString;
+    String eyeColorString;
+    String nationalityString;
     Integer pageIdxString;
     Integer pageSizeString;
     String sortFieldString;
@@ -100,6 +101,9 @@ public class PersonParams {
         this.pageIdx = FieldConverter.intConvert(pageIdx, -1);
         this.pageSize = FieldConverter.intConvert(pageSize, -1);
         this.sortField = FieldConverter.sortFieldFilterConvert(sortField, Person.getAllFields(), validatorResult);
+        this.eyeColorString = eyeColor;
+        this.hairColorString = hairColor;
+        this.nationalityString = nationality;
     }
 
     public List<Predicate> getPredicates(
@@ -194,6 +198,15 @@ public class PersonParams {
             }
             if (!validateSortField(this.sortField)) {
                 errorParams.add("sortField");
+            }
+            if (nationalityString != null && this.nationality == null) {
+                errorParams.add("nationality");
+            }
+            if (hairColorString != null && this.hairColor == null) {
+                errorParams.add("hairColor");
+            }
+            if (eyeColorString != null && this.eyeColor == null) {
+                errorParams.add("eyeColor");
             }
             if (errorParams.size() > 0) {
                 validatorMessage.setMessage("Unsupported value of params: " + String.join(", ", errorParams));
