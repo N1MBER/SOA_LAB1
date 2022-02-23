@@ -13,4 +13,8 @@ public class ServerResponse {
 
     @XmlElement
     String message;
+
+    public String getMessage() {
+        return message;
+    }
 }

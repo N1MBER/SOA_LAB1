@@ -29,11 +29,22 @@ public class PersonService {
         try{
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye);
-            String str = target.request().accept(MediaType.APPLICATION_XML).get(String.class);
-            PersonResultsDTO personResultsDTO = xmlConverter.fromStr(str, PersonResultsDTO.class);
-            return getInfo(200, "Count of persons with this eye color " + str_eye + " is: " + personResultsDTO.getTotalPersons());
+            Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
+            String str = response.readEntity(String.class);
+            if (response.getStatus() == Response.Status.OK.getStatusCode()){
+                try {
+                    PersonResultsDTO personResultsDTO = xmlConverter.fromStr(str, PersonResultsDTO.class);
+                    return getInfo(200, "Count of persons with this eye color " + str_eye + " is: " + personResultsDTO.getTotalPersons());
+                } catch (Exception e) {
+                    return getInfo(500, str + ", Error: " + e.getMessage());
+                }
+            }
+            else {
+                ServerResponse serverResponse = xmlConverter.fromStr(str, ServerResponse.class);
+                return getInfo(500, serverResponse.getMessage());
+            }
         } catch (Exception e){
-            return getInfo(500, e.getMessage() + " " + e.getLocalizedMessage());
+            return getInfo(500, "Server error, try again");
         }
     }
 
@@ -45,9 +56,21 @@ public class PersonService {
 
         try{
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&page=1&sortField=id&eyeColor=" + str_eye);
-            PersonResultsDTO personResultsDTO = target.request().get().readEntity(PersonResultsDTO.class);
-            return getInfo(200, "Count of persons with this eye color and nationality is: " + personResultsDTO.getTotalPersons());
+            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye + "&nationality=" + str_nationality);
+            Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
+            String str = response.readEntity(String.class);
+            if (response.getStatus() == Response.Status.OK.getStatusCode()){
+                try {
+                    PersonResultsDTO personResultsDTO = xmlConverter.fromStr(str, PersonResultsDTO.class);
+                    return getInfo(200, "Count of persons with this eye color and nationality is: " + personResultsDTO.getTotalPersons());
+                } catch (Exception e) {
+                    return getInfo(500, str + ", Error: " + e.getMessage());
+                }
+            }
+            else {
+                ServerResponse serverResponse = xmlConverter.fromStr(str, ServerResponse.class);
+                return getInfo(500, serverResponse.getMessage());
+            }
         } catch (Exception e){
             return getInfo(500, "Server error, try again");
         }
