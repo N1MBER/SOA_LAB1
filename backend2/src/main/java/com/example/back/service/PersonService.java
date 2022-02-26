@@ -4,19 +4,25 @@ import com.example.back.converter.XMLConverter;
 import com.example.back.utils.PersonResultsDTO;
 import com.example.back.utils.ServerResponse;
 import com.example.back.validator.ValidatorResult;
+import lombok.SneakyThrows;
+import org.glassfish.jersey.SslConfigurator;
 
+import javax.naming.InitialContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.HostnameVerifier;
+import javax.naming.Context;
+
 
 public class PersonService {
     private XMLConverter xmlConverter;
 
+
+    @SneakyThrows
     public PersonService(){
         xmlConverter = new XMLConverter();
     }
@@ -27,8 +33,8 @@ public class PersonService {
             return getInfo(400, validatorResult.getMessage());
         }
         try{
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye);
+            Client client = createClientBuilderSSL();
+            WebTarget target = client.target("https://localhost:8081/back/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye);
             Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
             String str = response.readEntity(String.class);
             if (response.getStatus() == Response.Status.OK.getStatusCode()){
@@ -44,7 +50,7 @@ public class PersonService {
                 return getInfo(500, serverResponse.getMessage());
             }
         } catch (Exception e){
-            return getInfo(500, "Server error, try again");
+            return getInfo(500, "Server error, try again. Error:" + e.getMessage());
         }
     }
 
@@ -55,8 +61,8 @@ public class PersonService {
         }
 
         try{
-            Client client = ClientBuilder.newClient();
-            WebTarget target = client.target("http://localhost:8080/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye + "&nationality=" + str_nationality);
+            Client client = createClientBuilderSSL();
+            WebTarget target = client.target("https://localhost:8081/back/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye + "&nationality=" + str_nationality);
             Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
             String str = response.readEntity(String.class);
             if (response.getStatus() == Response.Status.OK.getStatusCode()){
@@ -72,7 +78,7 @@ public class PersonService {
                 return getInfo(500, serverResponse.getMessage());
             }
         } catch (Exception e){
-            return getInfo(500, "Server error, try again");
+            return getInfo(500, "Server error, try again. Error:" + e.getMessage());
         }
     }
 
@@ -81,4 +87,21 @@ public class PersonService {
         return Response.status(code).entity(xmlConverter.toStr(serverResponse)).build();
     }
 
+    private Client createClientBuilderSSL() {
+        SSLContext sslContext = SslConfigurator.newInstance()
+                .keyPassword("soasoa")
+                .trustStorePassword("soasoa")
+                .createSSLContext();
+        HostnameVerifier hostnameVerifier = (hostname, sslSession) -> {
+            System.out.println(" hostname = " + hostname);
+            if (hostname.equals("localhost")) {
+                return true;
+            }
+            return false;
+        };
+        return ClientBuilder.newBuilder()
+                .sslContext(sslContext)
+                .hostnameVerifier(hostnameVerifier)
+                .build();
+    }
 }

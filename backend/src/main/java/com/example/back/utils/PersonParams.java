@@ -125,6 +125,9 @@ public class PersonParams {
         if (this.hairColor != null){
             predicates.add(criteriaBuilder.equal(root.get("hairColor"), this.hairColor));
         }
+        if (this.eyeColor != null){
+            predicates.add(criteriaBuilder.equal(root.get("eyeColor"), this.eyeColor));
+        }
         if (this.nationality != null){
             predicates.add(criteriaBuilder.equal(root.get("nationality"), this.nationality));
         }

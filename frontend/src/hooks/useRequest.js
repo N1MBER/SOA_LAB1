@@ -1,4 +1,4 @@
-import {API_EYE_COLOR, API_PERSONS, sendRequest} from "../modules/api";
+import {API_EYE_COLOR, API_PERSONS, back2URL, sendRequest} from "../modules/api";
 import converter from "xml2js";
 import {decomposePersonToNormalView} from "../modules/helpers/decompose";
 import {constructPersonToNormalView, OBJtoXML} from "../modules/helpers/constructors";
@@ -49,10 +49,7 @@ export const useRequest = () => {
 
     const getEyeColor = async (color, nationality) => {
         try {
-            console.log(color, nationality )
-            return await sendRequest('GET', API_EYE_COLOR + `/${color ?? ''}` + (nationality ? `/nationality/${nationality ?? ''}/`: '')).then(async response => {
-                console.log(234)
-                console.log(response)
+            return await sendRequest('GET', API_EYE_COLOR + `/${color ?? ''}` + (nationality ? `/nationality/${nationality ?? ''}/`: ''), undefined, back2URL).then(async response => {
                 if (!response.error) {
                     return await converter.parseStringPromise(response).then(res => {
                         if (res && res.person) {
