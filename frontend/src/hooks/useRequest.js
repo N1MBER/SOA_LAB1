@@ -61,7 +61,6 @@ export const useRequest = () => {
                         }
                     })
                 } else {
-                    console.log(response)
                     return await getErrorMessage(response.message);
                 }
             })
@@ -121,7 +120,6 @@ export const useRequest = () => {
         if (value && !withoutFilter)
             filter = Object.assign(filter, value);
         return await sendRequest('GET', API_PERSONS + `${path ? path: ''}` + constructParamString(filter)).then(async response => {
-            console.log(response)
             try {
                 if (!response.error) {
                     return await converter.parseStringPromise(response).then(res => {

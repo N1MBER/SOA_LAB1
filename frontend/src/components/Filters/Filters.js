@@ -26,7 +26,7 @@ export const Filters = ({
                      onActiveFilter
 }) => {
     const [mode, setMode] = useState(FILTER_MODE);
-
+    const [visible, setVisible] = useState(true);
     const [values, setValues] = useState({});
     const data = useSelector((store) => store.object);
 
@@ -95,6 +95,8 @@ export const Filters = ({
             val[key] = '';
         })
         setValues(val);
+        setVisible(false);
+        setTimeout(() => setVisible(true), 100);
     }
 
     const selectSortId = (id) => {
@@ -139,7 +141,7 @@ export const Filters = ({
                     />
                 </div>
             </div>
-            {objectStructure &&
+            {visible && objectStructure &&
                 <div className={classnames(style.Filters__form, {
                     [style.Filters__form_filter_mode]: mode === FILTER_MODE
                 })}>

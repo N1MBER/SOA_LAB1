@@ -146,7 +146,6 @@ export const FilterModal = ({type}) => {
                 return "Локация меньше";
         }
     }
-
     return (
         <div className={style.View}>
             <h4 className={style.View__title}>

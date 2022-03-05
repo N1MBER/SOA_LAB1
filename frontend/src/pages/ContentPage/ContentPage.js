@@ -32,20 +32,14 @@ export const ContentPage = () => {
     const filter = useSelector(store => store.filter);
 
     useEffect(() => {
-        console.log(123)
-        setObjectStructure(
-            getObjectStructureByPathName(
-                `/persons/${location.pathname.split('/')[2]}`
-            )
-        );
         getData(1)
+        setObject(PersonStructure)
     }, [location.pathname]);
 
     const getData = (page) => {
         setIsLoading(true)
         getFilteredItems({pageIdx: page}).then(res => {
             setIsLoading(false)
-            console.log(res)
             if (!res.error){
                 setContent(res.results);
                 setCount(res.count);
@@ -161,7 +155,7 @@ export const ContentPage = () => {
                     .pathname.split('/')[1]
                     .toUpperCase()}
                 method={"Post"}
-                objectStructure={objectStructure}
+                objectStructure={PersonStructure}
                 onSubmitAction={(res) => submitAction(res, true)}
             />
             <PaginationList

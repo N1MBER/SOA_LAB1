@@ -16,14 +16,30 @@ import javax.ws.rs.core.Response;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.HostnameVerifier;
 import javax.naming.Context;
+import java.net.URI;
+import javax.ws.rs.core.UriBuilder;
 
 
 public class PersonService {
     private XMLConverter xmlConverter;
 
+    private String backFirst;
+    private String hostname;
+    private String trustPassword;
+    private String keyPassword;
+    private String api;
+    private String persons;
+    private String params = "persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=";
 
     @SneakyThrows
     public PersonService(){
+        Context env = (Context)new InitialContext().lookup("java:comp/env");
+        backFirst = (String)env.lookup("uri");
+        hostname = (String)env.lookup("hostname");
+        trustPassword = (String)env.lookup("keyPassword");
+        keyPassword = (String)env.lookup("trustPassword");
+        api = (String)env.lookup("api");
+        persons = (String)env.lookup("persons");
         xmlConverter = new XMLConverter();
     }
 
@@ -33,9 +49,13 @@ public class PersonService {
             return getInfo(400, validatorResult.getMessage());
         }
         try{
-            Client client = createClientBuilderSSL();
-            WebTarget target = client.target("https://localhost:8081/back/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye);
-            Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
+            System.out.println(getTarget().path(params + str_eye).toString());
+            Response response = getTarget()
+                    .queryParam("pageSize", 1)
+                    .queryParam("pageIdx", 1)
+                    .queryParam("sortField", "id")
+                    .queryParam("eyeColor", str_eye)
+                    .request().accept(MediaType.APPLICATION_XML).get(Response.class);
             String str = response.readEntity(String.class);
             if (response.getStatus() == Response.Status.OK.getStatusCode()){
                 try {
@@ -61,9 +81,13 @@ public class PersonService {
         }
 
         try{
-            Client client = createClientBuilderSSL();
-            WebTarget target = client.target("https://localhost:8081/back/api/persons?pageSize=1&pageIdx=1&sortField=id&eyeColor=" + str_eye + "&nationality=" + str_nationality);
-            Response response = target.request().accept(MediaType.APPLICATION_XML).get(Response.class);
+            Response response = getTarget()
+                    .queryParam("pageSize", 1)
+                    .queryParam("pageIdx", 1)
+                    .queryParam("sortField", "id")
+                    .queryParam("eyeColor", str_eye)
+                    .queryParam("nationality", str_nationality)
+                    .request().accept(MediaType.APPLICATION_XML).get(Response.class);
             String str = response.readEntity(String.class);
             if (response.getStatus() == Response.Status.OK.getStatusCode()){
                 try {
@@ -87,14 +111,20 @@ public class PersonService {
         return Response.status(code).entity(xmlConverter.toStr(serverResponse)).build();
     }
 
+    public WebTarget getTarget() {
+        URI uri = UriBuilder.fromUri(backFirst).build();
+        Client client = createClientBuilderSSL();
+        return client.target(uri).path(api).path(persons);
+    }
+
     private Client createClientBuilderSSL() {
         SSLContext sslContext = SslConfigurator.newInstance()
-                .keyPassword("soasoa")
-                .trustStorePassword("soasoa")
+                .keyPassword(keyPassword)
+                .trustStorePassword(trustPassword)
                 .createSSLContext();
         HostnameVerifier hostnameVerifier = (hostname, sslSession) -> {
             System.out.println(" hostname = " + hostname);
-            if (hostname.equals("localhost")) {
+            if (hostname.equals(this.hostname)) {
                 return true;
             }
             return false;

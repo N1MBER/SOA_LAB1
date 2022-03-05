@@ -1,4 +1,4 @@
-const isDev = false
+const isDev = true
 
 export const backURL = isDev ? 'https://localhost:8081/back' : '/back';
 export const back2URL = 'https://localhost:8182/back2'
@@ -26,7 +26,6 @@ export const sendRequest = async (method, end_point,data, back) => {
     let Headers = {};
     Headers["Content-Type"] =  "application/xml"
     const url = back ?? backURL;
-    console.log(url + end_point, end_point, url)
     return await fetch(url + end_point, getFetchInit(method, Headers, data)).then(async (response) => {
         if (
             Math.trunc(response.status / 100) === 4

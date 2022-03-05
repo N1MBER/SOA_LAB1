@@ -15,7 +15,7 @@
     <env-entry>
         <env-entry-name>uri</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>https://localhost:8080/back</env-entry-value>
+        <env-entry-value>https://localhost:8081/back</env-entry-value>
     </env-entry>
     <env-entry>
         <env-entry-name>hostname</env-entry-name>
@@ -36,5 +36,10 @@
         <env-entry-name>api</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>api</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>persons</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>persons</env-entry-value>
     </env-entry>
 </web-app>
